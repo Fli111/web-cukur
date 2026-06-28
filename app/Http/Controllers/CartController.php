@@ -101,19 +101,19 @@ class CartController extends Controller
             }
 
             // Insert ke tabel checkout utama
-            $checkoutId = DB::table('tb_checkout')->insertGetId([
-                'users_id' => $userId,
+            $checkoutId = DB::table('ec_transaksi')->insertGetId([
+                'user_id' => $userId,
                 'total_harga' => $total,
-                'tanggal_checkout' => now(),
+                'tanggal_transaksi' => now(),
                 'status_pembayaran' => 'pending'
             ]);
 
             // Insert item detailnya satu per satu
             foreach($itemsWithDetails as $item) {
-                DB::table('tb_detail_checkout')->insert([
-                    'checkout_id' => $checkoutId,
+                DB::table('ec_detail_transaksi')->insert([
+                    'transaksi_id' => $checkoutId,
                     'barang_id' => $item->barang_id,
-                    'jumlah' => $item->qty,
+                    'qty' => $item->qty,
                     'harga_satuan' => $item->harga
                 ]);
             }
