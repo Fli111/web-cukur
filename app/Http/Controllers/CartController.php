@@ -94,7 +94,7 @@ class CartController extends Controller
             return redirect('/productpage')->with('error', 'Keranjang kamu kosong!');
         }
 
-        DB::transaction(function() use ($itemsWithDetails, $userId) {
+        DB::transaction(function() use ($itemsWithDetails, $userId, $request) {
             $total = 0;
             foreach($itemsWithDetails as $item) {
                 $total += $item->harga * $item->qty;
@@ -102,10 +102,13 @@ class CartController extends Controller
 
             // Insert ke tabel checkout utama
             $checkoutId = DB::table('ec_transaksi')->insertGetId([
-                'user_id' => $userId,
-                'total_harga' => $total,
-                'tanggal_transaksi' => now(),
-                'status_pembayaran' => 'pending'
+                'user_id'            => $userId,
+                'total_harga'        => $total,
+                'tanggal_transaksi'  => now(),
+                'alamat_pengiriman'  => $request->input('alamat_pengiriman', '-'),
+                'metode_pembayaran'  => $request->input('metode_pembayaran', '-'),
+                'opsi_pengiriman'    => $request->input('opsi_pengiriman', '-'),
+                'status_pesanan'     => 'pending'   // ← ganti dari status_pembayaran
             ]);
 
             // Insert item detailnya satu per satu

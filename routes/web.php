@@ -3,9 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB; 
 use App\Http\Controllers\AuthController; 
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PageController;
+
+// --- RUTE HALAMAN PUBLIK ---
+Route::get('/', [PageController::class, 'homepage']); // Homepage cukup di sini aja
+Route::get('/productpage', [PageController::class, 'productpage']);
+Route::get('/productdetail/{id}', [PageController::class, 'productdetail']);
+
 
 // --- RUTE AUTHENTICATION ---
 Route::get('/login', [AuthController::class, 'showLogin']);
@@ -14,10 +20,6 @@ Route::get('/register', [AuthController::class, 'showRegister']);
 Route::post('/register', [AuthController::class, 'prosesRegister']);
 Route::get('/logout', [AuthController::class, 'logout']);
 
-// --- RUTE HALAMAN PUBLIK ---
-Route::get('/', [PageController::class, 'homepage']); // Homepage cukup di sini aja
-Route::get('/productpage', [PageController::class, 'productpage']);
-Route::get('/productdetail/{id}', [PageController::class, 'productdetail']);
 
 // --- RUTE KERANJANG & CHECKOUT ---
 Route::get('/cartpage', [CartController::class, 'showCart']);
