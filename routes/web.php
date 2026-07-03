@@ -7,8 +7,10 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PageController;
 
+
 // --- RUTE HALAMAN PUBLIK ---
-Route::get('/', [PageController::class, 'homepage']); // Homepage cukup di sini aja
+Route::get('/', [PageController::class, 'home']);       // ← Landing page barbershop
+Route::get('/shop', [PageController::class, 'homepage']);     // ← Halaman toko/produk
 Route::get('/productpage', [PageController::class, 'productpage']);
 Route::get('/productdetail/{id}', [PageController::class, 'productdetail']);
 
