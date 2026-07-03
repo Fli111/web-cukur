@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="/">MR. HARTONO</a>
+        <a href="/shop">MR. HARTONO</a>
         <div class="nav-menu">
             <a href="/productpage">Shop All</a>  
             <a href="#">Treatment</a> 
