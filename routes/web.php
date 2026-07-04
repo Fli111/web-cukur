@@ -6,20 +6,24 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\BookingController;
 
+
+// Rute untuk Halaman (Tampilan)
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/book', [PageController::class, 'book'])->name('book');
+Route::get('/login', [PageController::class, 'login'])->name('login');
+Route::get('/create', [PageController::class, 'create'])->name('create');
+Route::get('/tanggal-book', [PageController::class, 'tanggalBook'])->name('tanggal_book');
+
+// Rute untuk Proses Form (Aksi)
+Route::post('/proses-register', [AuthController::class, 'register'])->name('proses.register');
+Route::post('/proses-login', [AuthController::class, 'login'])->name('proses.login');
+Route::post('/proses-booking', [BookingController::class, 'store'])->name('proses.booking');
 
 // --- RUTE HALAMAN PUBLIK ---
-Route::get('/', [PageController::class, 'ecommerceHomePage']);     // ← Halaman toko/produk
 Route::get('/ecommerceProductPage', [PageController::class, 'ecommerceProductPage']);
 Route::get('/ecommerceProductDetail/{id}', [PageController::class, 'ecommerceProductDetail']);
-
-
-// --- RUTE AUTHENTICATION ---
-Route::get('/login', [AuthController::class, 'showLogin']);
-Route::post('/login', [AuthController::class, 'prosesLogin']);
-Route::get('/register', [AuthController::class, 'showRegister']);
-Route::post('/register', [AuthController::class, 'prosesRegister']);
-Route::get('/logout', [AuthController::class, 'logout']);
 
 
 // --- RUTE KERANJANG & CHECKOUT ---

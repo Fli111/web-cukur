@@ -3,36 +3,50 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Barber; // Panggil model Barber di sini
 
 class PageController extends Controller
 {
-    // Landing page barbershop (route '/')
     public function home()
     {
-        return view('home'); // resources/views/home.blade.php
+        return view('home');
     }
 
-    // Halaman toko/produk (route '/shop')
-    public function ecommerceHomePage()
+    public function book(Request $request)
     {
-        $produk = DB::table('ec_produk')->orderBy('barang_id', 'desc')->get();
-        return view('ecommerceHomePage', compact('produk')); // resources/views/ec_home.blade.php
+        $service = $request->query('service');
+        $price = $request->query('price');
+        
+        // Ambil semua data barber dari database (menggantikan mysqli_query)
+        $barbers = Barber::all();
+        
+        return view('book', compact('service', 'price', 'barbers'));
     }
 
-    public function ecommerceProductPage()
+    public function login()
     {
-        $powder  = DB::table('ec_produk')->where('kategori', 'Powder')->get();
-        $shampoo = DB::table('ec_produk')->where('kategori', 'Shampoo')->get();
-        return view('ecommerceProductPage', ['powder' => $powder, 'shampoo' => $shampoo]);
+        return view('login');
     }
 
-    public function ecommerceProductDetail($id)
+    public function create()
     {
-        $data = DB::table('ec_produk')->where('barang_id', $id)->first();
-        if (!$data) {
-            return redirect('/ecommerceProductPage');
+        return view('create');
+    }
+
+    public function tanggalBook(Request $request)
+    {
+        $artisan = $request->query('artisan');
+        $service = $request->query('service');
+        $price = $request->query('price');
+
+        // Cari data barber berdasarkan ID (menggantikan query mysqli)
+        $dataBarber = Barber::where('barber_id', $artisan)->first();
+
+        // Jika data tidak ada, kembalikan ke home
+        if(!$dataBarber || empty($service) || empty($price)){
+            return redirect()->route('home');
         }
-        return view('ecommerceProductDetail', ['data' => $data]);
+
+        return view('tanggal_book', compact('artisan', 'service', 'price', 'dataBarber'));
     }
 }

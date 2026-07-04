@@ -5,50 +5,82 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Barber;
 use App\Models\Service;
+use App\Models\Booking;
+use Illuminate\Support\Facades\Auth;
 
-class BookController extends Controller
+class BookingController extends Controller
 {
-    // Method untuk menampilkan halaman pilih barber (dulu book.php)
-    public function pilihBarber($service_id)
+    // 1. Menampilkan daftar Barber
+    public function showBarbers(Request $request) 
     {
-        // Ambil semua data barber
-        $barbers = Barber::all();
-        
-        // Return view ke resources/views/booking/pilih_barber.blade.php
-        return view('booking.pilih_barber', compact('barbers', 'service_id'));
-    }
-
-    // Method untuk menampilkan halaman pilih tanggal & jam (dulu tanggal_book.php)
-    public function pilihTanggal(Request $request)
-    {
-        $artisan = $request->query('artisan');
+        // Menggunakan Eloquent untuk mengambil semua data barber
+        $barbers = Barber::all(); 
         $service_id = $request->query('service_id');
 
-        // Validasi jika user langsung akses tanpa pilih barber/service
-        if (!$artisan || !$service_id) {
-            return redirect('/');
-        }
-
-        $barber = Barber::find($artisan);
-        $service = Service::find($service_id);
-
-        return view('booking.tanggal_book', compact('barber', 'service'));
+        // Pastikan kamu punya file blade di: resources/views/book.blade.php
+        return view('book', compact('barbers', 'service_id'));
     }
 
-    // Method untuk memproses simpan booking ke database
-    public function simpanBooking(Request $request)
+    // 2. Menampilkan halaman pilih tanggal
+    public function showTanggal(Request $request) 
     {
-        // Validasi input form
-        $request->validate([
-            'tanggal' => 'required|date',
-            'jam' => 'required',
-            'barber_id' => 'required',
-            // ... field lain
-        ]);
+        // Cek login ala Laravel
+        if (!Auth::check()) {
+            return redirect()->route('home'); // Pastikan route 'home' sudah diberi nama di web.php
+        }
 
-        // Simpan data ke database (pake model Booking)
-        // Booking::create([...]);
+        $artisan_id = $request->query('artisan');
+        $service_id = $request->query('service_id');
 
-        return redirect('/success')->with('message', 'Booking berhasil!');
+        if (empty($artisan_id) || empty($service_id)) {
+            return redirect()->route('home');
+        }
+
+        $dataBarber = Barber::find($artisan_id);
+        $dataService = Service::find($service_id);
+
+        // Pastikan kamu punya file blade di: resources/views/tanggal_book.blade.php
+        return view('tanggal_book', compact('dataBarber', 'dataService'));
+    }
+
+    // 3. Memproses Booking (Sesuai dengan error trace sebelumnya, metodenya bernama 'store')
+    public function store(Request $request) 
+    {
+        // 1. Cek Login
+        if (!Auth::check()) {
+            return response("<script>
+                alert('Sistem mendeteksi kamu belum login! Silakan login ulang.'); 
+                window.history.back();
+            </script>");
+        }
+
+        try {
+            // 2. Menerjemahkan format '01:45 PM' menjadi format MySQL '13:45:00'
+            $jamDariForm = $request->input('jam');
+            $jamUntukDatabase = date('H:i:s', strtotime($jamDariForm));
+
+            // 3. Simpan data menggunakan waktu yang sudah dikonversi
+            $booking = Booking::create([
+                'user_id'    => Auth::id(),
+                'barber_id'  => $request->input('artisan'),
+                'service_id' => $request->input('service_id'),
+                'tanggal'    => $request->input('tanggal'),
+                'waktu'      => $jamUntukDatabase, // Gunakan variabel yang sudah diubah formatnya
+                'status'     => 'pending',
+            ]);
+
+            // Jika sukses melewati Booking::create
+            return response("<script>
+                alert('Booking berhasil dibuat!'); 
+                window.location.href='".url('/')."'; 
+            </script>");
+
+        } catch (\Exception $e) {
+            // Kita tetap biarkan try-catch ini untuk jaga-jaga kalau ada error lain
+            dd([
+                "Pesan Error Database" => $e->getMessage(),
+                "Data yang dikirim dari Form HTML" => $request->all()
+            ]);
+        }
     }
 }
