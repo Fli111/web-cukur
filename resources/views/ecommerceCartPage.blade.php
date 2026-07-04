@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.ecommercemain')
 @section('title', 'Checkout Keranjang - MR. HARTONO')
 
 @section('content')
@@ -90,7 +90,7 @@
     @else
         <div style="text-align: center; padding: 100px 0;">
             <h2>Keranjang belanja kamu masih kosong cuy.</h2>
-            <button class="btn-hitam auto-width" style="margin-top:20px;" onclick="window.location.href='/productpage'">Lihat Produk</button>
+            <button class="btn-hitam auto-width" style="margin-top:20px;" onclick="window.location.href='/ecommerceProductPage'">Lihat Produk</button>
         </div>
     @endif
 </div>

@@ -1,9 +1,14 @@
-@extends('layouts.main')
-@section('title', 'Register - MR. HARTONO')
-
-@section('content')
-<div class="login-body">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - MR. HARTONO</title>
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
+</head>
+<body class="login-body">
     <div class="login-box">
+
         <h1 class="login-title">Daftar Akun Baru</h1>
         <p class="login-subtitle">Bergabunglah dan nikmati layanan MR. HARTONO</p>
 
@@ -40,5 +45,5 @@
             Udah punya akun? <a href="/login">Login di sini</a>
         </div>
     </div>
-</div>
-@endsection
+</body>
+</html>

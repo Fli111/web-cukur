@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
-    // Tampilan Halaman Cart (Pengganti cartpage.php)
+    // Tampilan Halaman Cart (Pengganti ecommerceCartPage.php)
     public function showCart()
     {
         // Kalau belum login, tampilkan keranjang kosong
         if (!session()->has('user_id')) {
-            return view('cartpage', ['cart' => [], 'total' => 0]);
+            return view('ecommerceCartPage', ['cart' => [], 'total' => 0]);
         }
 
         $userId = session('user_id');
@@ -34,7 +34,7 @@ class CartController extends Controller
             $total += $item->harga * $item->jumlah;
         }
 
-        return view('cartpage', compact('cart', 'total'));
+        return view('ecommerceCartPage', compact('cart', 'total'));
     }
 
     // Logic Tambah Item ke Cart
@@ -74,7 +74,7 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect('/cartpage')->with('success', 'Produk berhasil masuk keranjang!');
+        return redirect('/ecommerceCartPage')->with('success', 'Produk berhasil masuk keranjang!');
     }
 
     // Proses Simpan ke Database (Pengganti proses_checkout.php)

@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.ecommercemain')
 @section('title', $data->nama_produk . ' - MR. HARTONO')
 
 @section('content')

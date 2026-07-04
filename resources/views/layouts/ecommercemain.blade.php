@@ -8,9 +8,9 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="/shop">MR. HARTONO</a>
+        <a href="/">MR. HARTONO</a>
         <div class="nav-menu">
-            <a href="/productpage">Shop All</a>  
+            <a href="/ecommerceProductPage">Shop All</a>  
             <a href="#">Treatment</a> 
             
             @if(!session()->has('user_id'))
@@ -22,7 +22,7 @@
                 <a href="/logout" style="color: red; font-weight: bold;">Logout</a>
             @endif
 
-            <a href="/cartpage">Cart</a>
+            <a href="/ecommerceCartPage">Cart</a>
 
             <!-- Live Search -->
             <div class="search-bar">

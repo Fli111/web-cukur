@@ -14,32 +14,25 @@ class PageController extends Controller
     }
 
     // Halaman toko/produk (route '/shop')
-    public function ecHome()
+    public function ecommerceHomePage()
     {
         $produk = DB::table('ec_produk')->orderBy('barang_id', 'desc')->get();
-        return view('ec_home', compact('produk')); // resources/views/ec_home.blade.php
+        return view('ecommerceHomePage', compact('produk')); // resources/views/ec_home.blade.php
     }
 
-    // Ini kayaknya homepage lama (ec_home versi lama), bisa dihapus kalau sudah tidak dipakai
-    public function homepage()
-    {
-        $produk = DB::table('ec_produk')->orderBy('barang_id', 'desc')->limit(5)->get();
-        return view('homepage', ['produk' => $produk]);
-    }
-
-    public function productpage()
+    public function ecommerceProductPage()
     {
         $powder  = DB::table('ec_produk')->where('kategori', 'Powder')->get();
         $shampoo = DB::table('ec_produk')->where('kategori', 'Shampoo')->get();
-        return view('productpage', ['powder' => $powder, 'shampoo' => $shampoo]);
+        return view('ecommerceProductPage', ['powder' => $powder, 'shampoo' => $shampoo]);
     }
 
-    public function productdetail($id)
+    public function ecommerceProductDetail($id)
     {
         $data = DB::table('ec_produk')->where('barang_id', $id)->first();
         if (!$data) {
-            return redirect('/productpage');
+            return redirect('/ecommerceProductPage');
         }
-        return view('productdetail', ['data' => $data]);
+        return view('ecommerceProductDetail', ['data' => $data]);
     }
 }

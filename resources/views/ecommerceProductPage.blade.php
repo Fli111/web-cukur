@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.ecommercemain')
 @section('title', 'Shop All - MR. HARTONO')
 
 @section('content')
@@ -16,7 +16,7 @@
     <h2 class="section-title">HAIR POWDER</h2>
     <div class="scroll-wrapper">
         @foreach($powder as $barang)
-        <a href="/productdetail/{{ $barang->barang_id }}" class="produk-card">
+        <a href="/ecommerceProductDetail/{{ $barang->barang_id }}" class="produk-card">
             <img src="{{ asset('uploads/' . $barang->gambar_produk) }}" class="img-produk" alt="{{ $barang->nama_produk }}">
             <div class="nama-produk">{{ $barang->nama_produk }}</div>
             <div class="harga-produk">IDR {{ number_format($barang->harga, 0, ',', '.') }}</div>
@@ -28,7 +28,7 @@
     <h2 class="section-title">SHAMPOO</h2>
     <div class="scroll-wrapper">
         @foreach($shampoo as $barang)
-        <a href="/productdetail/{{ $barang->barang_id }}" class="produk-card">
+        <a href="/ecommerceProductDetail/{{ $barang->barang_id }}" class="produk-card">
             <img src="{{ asset('uploads/' . $barang->gambar_produk) }}" class="img-produk" alt="{{ $barang->nama_produk }}">
             <div class="nama-produk">{{ $barang->nama_produk }}</div>
             <div class="harga-produk">IDR {{ number_format($barang->harga, 0, ',', '.') }}</div>

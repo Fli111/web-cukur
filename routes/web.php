@@ -9,10 +9,9 @@ use App\Http\Controllers\PageController;
 
 
 // --- RUTE HALAMAN PUBLIK ---
-Route::get('/', [PageController::class, 'home']);       // ← Landing page barbershop
-Route::get('/shop', [PageController::class, 'homepage']);     // ← Halaman toko/produk
-Route::get('/productpage', [PageController::class, 'productpage']);
-Route::get('/productdetail/{id}', [PageController::class, 'productdetail']);
+Route::get('/', [PageController::class, 'ecommerceHomePage']);     // ← Halaman toko/produk
+Route::get('/ecommerceProductPage', [PageController::class, 'ecommerceProductPage']);
+Route::get('/ecommerceProductDetail/{id}', [PageController::class, 'ecommerceProductDetail']);
 
 
 // --- RUTE AUTHENTICATION ---
@@ -24,7 +23,7 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 
 // --- RUTE KERANJANG & CHECKOUT ---
-Route::get('/cartpage', [CartController::class, 'showCart']);
+Route::get('/ecommerceCartPage', [CartController::class, 'showCart']);
 Route::post('/cart/add/{id}', [CartController::class, 'addToCart']);
 Route::post('/checkout', [CartController::class, 'prosesCheckout']);
 
