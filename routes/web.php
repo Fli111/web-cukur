@@ -24,7 +24,7 @@ Route::post('/proses-booking', [BookingController::class, 'store'])->name('prose
 // --- RUTE HALAMAN PUBLIK ---
 Route::get('/ecommerceProductPage', [PageController::class, 'ecommerceProductPage']);
 Route::get('/ecommerceProductDetail/{id}', [PageController::class, 'ecommerceProductDetail']);
-
+Route::get('/ecommerceHomePage', [PageController::class, 'ecommerceHomePage']);
 
 // --- RUTE KERANJANG & CHECKOUT ---
 Route::get('/ecommerceCartPage', [CartController::class, 'showCart']);

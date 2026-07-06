@@ -19,7 +19,7 @@
             <li><a href="#gallery">GALLERY</a></li>
             <li><a href="#about">ABOUT</a></li>
             <li><a href="#contact">CONTACT</a></li>
-            <li><a href="#">SHOP</a></li>
+            <li><a href="/ecommerceHomePage">SHOP</a></li>
         </ul>
 
         <div class="btn">
