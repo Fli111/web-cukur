@@ -34,6 +34,11 @@ class PageController extends Controller
         return view('create');
     }
 
+        public function index()
+    {
+        return view('dashboard');
+    }
+
     public function tanggalBook(Request $request)
     {
         $artisan = $request->query('artisan');

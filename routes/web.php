@@ -7,6 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\DashboardController;
 
 
 // Rute untuk Halaman (Tampilan)
@@ -25,6 +26,9 @@ Route::post('/proses-booking', [BookingController::class, 'store'])->name('prose
 Route::get('/ecommerceProductPage', [PageController::class, 'ecommerceProductPage']);
 Route::get('/ecommerceProductDetail/{id}', [PageController::class, 'ecommerceProductDetail']);
 Route::get('/ecommerceHomePage', [PageController::class, 'ecommerceHomePage']);
+
+// Route Untuk Member
+Route::get('/dashboard', [PageController::class, 'index']);
 
 // --- RUTE KERANJANG & CHECKOUT ---
 Route::get('/ecommerceCartPage', [CartController::class, 'showCart']);

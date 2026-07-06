@@ -1,0 +1,397 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.wadah-dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR STYLING */
+.sidebar {
+    width: 260px;
+    background-color: #1a1a1a;
+    padding: 30px 20px;
+    border-right: 1px solid #2d2d2d;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    color: #d4af37; /* Warna Gold khas Mr. Hartono */
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+
+.menu-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu-nav a {
+    color: #b3b3b3;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.menu-nav a:hover, .menu-nav a.aktif {
+    background-color: #d4af37;
+    color: #121212;
+    font-weight: bold;
+}
+
+/* DESAIN TOMBOL KELUAR DI SIDEBAR */
+.menu-nav a.menu-keluar {
+    color: #e74c3c;
+    margin-top: 20px;
+}
+
+.menu-nav a.menu-keluar:hover {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+}
+
+/* KONTEN UTAMA STYLING */
+.konten-utama {
+    flex: 1;
+    padding: 40px;
+    background-color: #141414;
+    overflow-y: auto;
+}
+
+header {
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+header p {
+    color: #888888;
+}
+
+#nama-user {
+    color: #d4af37;
+}
+
+/* LOGIKA SEMBUNYI TAB */
+.seksi-konten {
+    display: none; 
+}
+
+.seksi-konten.aktif {
+    display: block; 
+}
+
+/* FLEX / GRID UNTUK BERANDA */
+.grid-beranda {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.kartu-status {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.kartu-member-aktif {
+    background: linear-gradient(135deg, #2c3e50, #3498db); 
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.kartu-member-aktif h2 {
+    font-size: 32px;
+    margin: 10px 0;
+    letter-spacing: 1px;
+}
+
+.tgl-kadaluarsa {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.info-benefit {
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid #d4af37;
+}
+
+.info-benefit h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #d4af37;
+}
+
+.info-benefit ul {
+    padding-left: 20px;
+    color: #cccccc;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* QR BARCODE SECTION */
+.qr-section {
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid #2d2d2d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.qr-section h3 {
+    margin-bottom: 8px;
+    color: #d4af37;
+}
+
+.qr-section p {
+    font-size: 13px;
+    color: #888888;
+    margin-bottom: 20px;
+    max-width: 300px;
+}
+
+.qr-box {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.qr-box img {
+    display: block;
+}
+
+.id-member {
+    font-size: 12px;
+    color: #555555;
+    font-family: monospace;
+}
+
+/* SECTION PROFIL SAYA */
+.kartu-profil {
+    background-color: #1a1a1a;
+    border-radius: 15px;
+    padding: 30px;
+    display: flex;
+    gap: 30px;
+    border: 1px solid #2d2d2d;
+}
+
+.foto-placeholder {
+    width: 100px;
+    height: 100px;
+    background-color: #d4af37;
+    color: #121212;
+    font-size: 32px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.detail-data {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.grup-info label {
+    font-size: 12px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nilai-info {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 3px;
+}
+
+.badge-platinum {
+    color: #3498db;
+    font-weight: bold;
+}
+
+.grup-info-tanggal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #2d2d2d;
+}
+
+.tgl-item label {
+    font-size: 12px;
+    color: #888888;
+}
+
+.nilai-tgl {
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+.teks-merah {
+    color: #e74c3c;
+}
+
+/* SECTION RIWAYAT PEMBELIAN (TABEL) */
+.tabel-responsif {
+    overflow-x: auto;
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    border: 1px solid #2d2d2d;
+}
+
+.tabel-riwayat {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.tabel-riwayat th, .tabel-riwayat td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #2d2d2d;
+}
+
+.tabel-riwayat th {
+    background-color: #222222;
+    color: #d4af37;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.tabel-riwayat tbody tr:hover {
+    background-color: #252525;
+}
+
+.status-selesai {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* MODAL LOGOUT STYLING */
+.modal-bg {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+
+.konten-modal {
+    background-color: #1a1a1a;
+    padding: 35px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    border: 1px solid #2d2d2d;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: munculModal 0.3s ease-out;
+}
+
+@keyframes munculModal {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+
+
+.konten-modal h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.konten-modal p {
+    color: #888888;
+    font-size: 14px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.grup-tombol {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.tombol-batal, .tombol-yakin {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.tombol-batal {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.tombol-batal:hover {
+    background-color: #444444;
+}
+
+.tombol-yakin {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+
+.tombol-yakin:hover {
+    background-color: #c0392b;
+}
+
+/* RESPONSIVE LAYOUT */
+@media (max-width: 850px) {
+    .grid-beranda, .grup-info-tanggal, .kartu-profil {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+}

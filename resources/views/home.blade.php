@@ -20,6 +20,7 @@
             <li><a href="#about">ABOUT</a></li>
             <li><a href="#contact">CONTACT</a></li>
             <li><a href="/ecommerceHomePage">SHOP</a></li>
+            <li><a href="/dashboard">MEMBER</a></li>
         </ul>
 
         <div class="btn">
