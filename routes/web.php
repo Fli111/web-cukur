@@ -20,6 +20,7 @@ Route::get('/tanggal-book', [PageController::class, 'tanggalBook'])->name('tangg
 Route::post('/proses-register', [AuthController::class, 'register'])->name('proses.register');
 Route::post('/proses-login', [AuthController::class, 'login'])->name('proses.login');
 Route::post('/proses-booking', [BookingController::class, 'store'])->name('proses.booking');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // --- RUTE HALAMAN PUBLIK ---
 Route::get('/ecommerceProductPage', [PageController::class, 'ecommerceProductPage']);

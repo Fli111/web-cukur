@@ -41,9 +41,13 @@ class AuthController extends Controller
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
 
-        // Cek role user yang baru login
-        $role = Auth::user()->role;
+        $user = Auth::user();
+        $request->session()->put('user_id', $user->id);
+        $request->session()->put('nama', $user->nama);
+        $request->session()->put('role', $user->role);
 
+        // Cek role user yang baru login
+        $role = $user->role;
         if ($role === 'admin') {
             return response("<script>
                 alert('Login berhasil, selamat datang Admin!');
@@ -63,4 +67,15 @@ class AuthController extends Controller
         </script>");
     }
 }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('home');
+    }
 }
