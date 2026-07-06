@@ -12,15 +12,16 @@
         <div class="nav-menu">
             <a href="/ecommerceProductPage">Shop All</a>  
             <a href="#">Treatment</a> 
-            
-            @if(!session()->has('user_id'))
-                <a href="/login">Login</a>  
+
+            @guest
+                <a href="{{ route('login') }}">Login</a>
             @else
-                @if(session('role') == 'admin')
-                    <a href="/admin/dashboard">Dashboard</a>
+                <a>{{ Auth::user()->nama }}</a>
+                @if(Auth::user()->role == 'admin')
+                    <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                 @endif
-                <a href="/logout" style="color: red; font-weight: bold;">Logout</a>
-            @endif
+                <a href="{{ route('logout') }}" style="color: red; font-weight: bold;">Logout</a>
+            @endguest
 
             <a href="/ecommerceCartPage">Cart</a>
 

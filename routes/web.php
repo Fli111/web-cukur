@@ -21,6 +21,7 @@ Route::get('/tanggal-book', [PageController::class, 'tanggalBook'])->name('tangg
 Route::post('/proses-register', [AuthController::class, 'register'])->name('proses.register');
 Route::post('/proses-login', [AuthController::class, 'login'])->name('proses.login');
 Route::post('/proses-booking', [BookingController::class, 'store'])->name('proses.booking');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // --- RUTE HALAMAN PUBLIK ---
 Route::get('/ecommerceProductPage', [PageController::class, 'ecommerceProductPage']);
@@ -38,16 +39,16 @@ Route::post('/checkout', [CartController::class, 'prosesCheckout']);
 // --- RUTE ADMIN (Dilindungi Middleware Pengecekan Session) ---
 Route::middleware(['admin'])->group(function () {
     // Dashboard Admin
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     
     // Tambah Produk
-    Route::get('/admin/produk/tambah', [AdminController::class, 'create']);
-    Route::post('/admin/produk/simpan', [AdminController::class, 'store']);
+    Route::get('/admin/produk/tambah', [AdminController::class, 'create'])->name('admin.produk.tambah');
+    Route::post('/admin/produk/simpan', [AdminController::class, 'store'])->name('admin.produk.simpan');
     
     // Edit Produk
-    Route::get('/admin/produk/edit/{id}', [AdminController::class, 'edit']);
-    Route::post('/admin/produk/update/{id}', [AdminController::class, 'update']);
+    Route::get('/admin/produk/edit/{id}', [AdminController::class, 'edit'])->name('admin.produk.edit');
+    Route::post('/admin/produk/update/{id}', [AdminController::class, 'update'])->name('admin.produk.update');
     
     // Hapus Produk
-    Route::get('/admin/produk/hapus/{id}', [AdminController::class, 'destroy']);
+    Route::get('/admin/produk/hapus/{id}', [AdminController::class, 'destroy'])->name('admin.produk.hapus');
 });
