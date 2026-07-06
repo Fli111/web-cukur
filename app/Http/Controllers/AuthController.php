@@ -35,22 +35,32 @@ class AuthController extends Controller
 
     // Proses Login
     public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
+{
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            // Tambahkan baris ini agar session benar-benar tersimpan!
-            $request->session()->regenerate(); 
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
 
+        // Cek role user yang baru login
+        $role = Auth::user()->role;
+
+        if ($role === 'admin') {
             return response("<script>
-                alert('Login berhasil');
-                window.parent.location.href='".route('home')."';
+                alert('Login berhasil, selamat datang Admin!');
+                window.parent.location.href='" . route('admin.dashboard') . "';
             </script>");
         } else {
             return response("<script>
-                alert('Email atau password salah');
-                window.history.back();
+                alert('Login berhasil');
+                window.parent.location.href='" . route('home') . "';
             </script>");
         }
+
+    } else {
+        return response("<script>
+            alert('Email atau password salah');
+            window.history.back();
+        </script>");
     }
+}
 }
