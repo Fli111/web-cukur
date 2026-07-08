@@ -23,6 +23,9 @@
 
             <a href="/ecommerceCartPage">Cart</a>
 
+            <a class="dropdown-item" href="{{ route('history') }}">Riwayat Belanja</a>
+
+
             <!-- Live Search -->
             <div class="search-bar">
                 <input type="text" class="search-input" placeholder="Cari produk impianmu..." style="width: 300px;">

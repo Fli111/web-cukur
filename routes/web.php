@@ -31,10 +31,11 @@ Route::get('/ecommerceHomePage', [PageController::class, 'ecommerceHomePage']);
 // Route Untuk Member
 Route::get('/dashboard', [PageController::class, 'index']);
 
-// --- RUTE KERANJANG & CHECKOUT ---
+// --- RUTE KERANJANG, CHECKOUT, DAN HISTORY---
 Route::get('/ecommerceCartPage', [CartController::class, 'showCart']);
 Route::post('/cart/add/{id}', [CartController::class, 'addToCart']);
 Route::post('/checkout', [CartController::class, 'prosesCheckout']);
+Route::get('/history', [PageController::class, 'showHistory'])->name('history')->middleware('auth');
 
 // --- RUTE ADMIN (Dilindungi Middleware Pengecekan Session) ---
 Route::middleware(['admin'])->group(function () {

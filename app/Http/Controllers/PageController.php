@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Barber;
 use App\Models\Produk;
+use App\Models\Transaksi;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
@@ -82,5 +84,23 @@ class PageController extends Controller
             return redirect('/ecommerceProductPage');
         }
         return view('ecommerceProductDetail', ['data' => $data]);
+    }
+
+    /**
+     * Menampilkan halaman riwayat belanja user yang sedang login.
+     */
+    public function showHistory()
+    {
+        // Ambil user yang sedang login
+        $user = Auth::user();
+
+        // Ambil data transaksi milik user tersebut, urutkan dari yang terbaru
+        // Gunakan 'with' untuk eager loading agar tidak terjadi N+1 query
+        $transaksis = Transaksi::where('user_id', $user->user_id)
+                                ->with('detailItems.produk') // Memuat relasi detailItems dan produk di dalamnya
+                                ->orderBy('tanggal_transaksi', 'desc')
+                                ->get();
+
+        return view('history', compact('transaksis')); // Kirim data ke view 'history.blade.php'
     }
 }
