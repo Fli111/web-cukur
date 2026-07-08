@@ -42,6 +42,11 @@ class PageController extends Controller
         return view('dashboard');
     }
 
+    public function membership()
+{
+    return view('pilih-member');
+}
+
     public function tanggalBook(Request $request)
     {
         $artisan = $request->query('artisan');
