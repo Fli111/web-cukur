@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produk;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
@@ -11,7 +11,7 @@ class AdminController extends Controller
     // Menampilkan Dashboard Admin
     public function dashboard()
     {
-        $produk = DB::table('ec_produk')->orderBy('barang_id', 'desc')->get();
+        $produk = Produk::orderBy('barang_id', 'desc')->get();
         return view('admin.dashboard', compact('produk'));
     }
 
@@ -29,13 +29,13 @@ class AdminController extends Controller
         // Pindahkan file ke folder public/uploads
         $gambar->move(public_path('uploads'), $nama_file);
 
-        DB::table('ec_produk')->insert([
+        Produk::create([
             'nama_produk' => $request->nama_produk,
             'kategori' => $request->kategori,
             'harga' => $request->harga,
             'stok' => $request->stok,
             'gambar_produk' => $nama_file,
-            'deskripsi_produk' => $request->deskripsi
+            'deskripsi_produk' => $request->deskripsi_produk
         ]);
 
         return redirect('/admin/dashboard')->with('success', 'Barang baru sukses masuk ke etalase.');
@@ -44,7 +44,7 @@ class AdminController extends Controller
     // Menampilkan Form Edit Produk
     public function edit($id)
     {
-        $data = DB::table('ec_produk')->where('barang_id', $id)->first();
+        $data = Produk::find($id);
         if (!$data) return redirect('/admin/dashboard');
 
         return view('admin.edit_produk', compact('data'));
@@ -53,6 +53,9 @@ class AdminController extends Controller
     // Proses Update Produk
     public function update(Request $request, $id)
     {
+        $produk = Produk::find($id);
+        if (!$produk) return redirect('/admin/dashboard');
+
         $data_update = [
             'nama_produk' => $request->nama_produk,
             'kategori' => $request->kategori,
@@ -70,7 +73,7 @@ class AdminController extends Controller
             $data_update['gambar_produk'] = $nama_file;
         }
 
-        DB::table('ec_produk')->where('barang_id', $id)->update($data_update);
+        $produk->update($data_update);
 
         return redirect('/admin/dashboard')->with('success', 'Mantap! Data produk berhasil diupdate.');
     }
@@ -78,7 +81,7 @@ class AdminController extends Controller
     // Proses Hapus Produk
     public function destroy($id)
     {
-        DB::table('ec_produk')->where('barang_id', $id)->delete();
+        Produk::destroy($id);
         return redirect('/admin/dashboard')->with('success', 'Sukses! Barang berhasil dihapus dari etalase.');
     }
 }

@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Transaksi;
+use App\Models\DetailTransaksi;
+use App\Models\Keranjang;
+use App\Models\Produk;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -11,28 +16,24 @@ class CartController extends Controller
     public function showCart()
     {
         // Kalau belum login, tampilkan keranjang kosong
-        if (!session()->has('user_id')) {
+        if (!Auth::check()) {
             return view('ecommerceCartPage', ['cart' => [], 'total' => 0]);
         }
 
-        $userId = session('user_id');
+        $userId = Auth::id();
 
-        // Ambil data keranjang dari database dengan join ke tabel produk
-        $cartItems = DB::table('ec_keranjang')
-            ->join('ec_produk', 'ec_keranjang.barang_id', '=', 'ec_produk.barang_id')
-            ->where('ec_keranjang.user_id', $userId)
-            ->select('ec_keranjang.barang_id', 'ec_produk.nama_produk', 'ec_produk.harga', 'ec_produk.gambar_produk', 'ec_keranjang.qty as jumlah')
-            ->get();
+        // Ambil data keranjang menggunakan Eloquent dan relasinya
+        $cartItems = Keranjang::with('produk')->where('user_id', $userId)->get();
 
-        // Ubah collection jadi array agar sesuai dengan format view
-        $cart = $cartItems->map(function($item) {
-            return (array)$item;
-        })->keyBy('barang_id')->all();
+        // Format data agar sesuai dengan view lama
+        $cart = $cartItems->mapWithKeys(function($item) {
+            return [$item->barang_id => [
+                'nama_produk' => $item->produk->nama_produk, 'harga' => $item->produk->harga, 'gambar_produk' => $item->produk->gambar_produk, 'jumlah' => $item->qty
+            ]];
+        })->all();
 
-        $total = 0;
-        foreach($cartItems as $item) {
-            $total += $item->harga * $item->jumlah;
-        }
+        // Hitung total harga dengan cara yang benar, mengakses relasi produk dan kolom qty
+        $total = $cartItems->sum(fn($item) => $item->produk->harga * $item->qty);
 
         return view('ecommerceCartPage', compact('cart', 'total'));
     }
@@ -41,36 +42,60 @@ class CartController extends Controller
     public function addToCart(Request $request, $id)
     {
         // Wajib login untuk tambah ke keranjang
-        if (!session()->has('user_id')) {
+        if (!Auth::check()) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Login dulu cuy sebelum nambahin barang ke keranjang!',
+                    'redirect' => route('login')
+                ], 401);
+            }
             return redirect('/login')->with('error', 'Login dulu cuy sebelum nambahin barang ke keranjang!');
         }
 
-        $userId = session('user_id');
+        $userId = Auth::id();
         $barangId = $id;
-        $qty = $request->input('qty', 1); // Ambil QTY dari form, default 1
+        $qty = (int)$request->input('qty', 1); // Ambil QTY dari form, default 1
 
-        $produk = DB::table('ec_produk')->where('barang_id', $id)->first();
-        if(!$produk) {
-            return redirect()->back()->with('error', 'Produk tidak ditemukan!');
+        $produk = Produk::find($barangId);
+        if (!$produk) {
+            if ($request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'Produk tidak ditemukan!'], 404);
+            }
+            return back()->with('error', 'Produk tidak ditemukan!');
         }
 
-        // Cek apakah barang sudah ada di keranjang user
-        $keranjangItem = DB::table('ec_keranjang')
-            ->where('user_id', $userId)
-            ->where('barang_id', $barangId)
-            ->first();
+        $keranjangItem = Keranjang::where('user_id', $userId)->where('barang_id', $barangId)->first();
 
+        $currentQtyInCart = $keranjangItem ? $keranjangItem->qty : 0;
+        $requestedTotalQty = $currentQtyInCart + $qty;
+
+        if ($produk->stok < $requestedTotalQty) {
+            $message = "Stok tidak mencukupi. Stok tersisa: {$produk->stok}.";
+            if ($request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => $message], 422);
+            }
+            return back()->with('error', $message);
+        }
+
+        // Gunakan updateOrCreate untuk menyederhanakan logika
+        // Jika item sudah ada, qty akan ditambah. Jika belum, akan dibuat.
         if ($keranjangItem) {
-            // Kalau sudah ada, update jumlahnya
-            DB::table('ec_keranjang')
-                ->where('keranjang_id', $keranjangItem->keranjang_id)
-                ->increment('qty', $qty);
+            $keranjangItem->increment('qty', $qty);
         } else {
-            // Kalau belum ada, insert data baru
-            DB::table('ec_keranjang')->insert([
+            Keranjang::create([
                 'user_id' => $userId,
                 'barang_id' => $barangId,
                 'qty' => $qty
+            ]);
+        }
+
+        if ($request->wantsJson()) {
+            $cartCount = Keranjang::where('user_id', $userId)->sum('qty');
+            return response()->json([
+                'success' => true,
+                'message' => 'Produk berhasil masuk keranjang!',
+                'cartCount' => $cartCount
             ]);
         }
 
@@ -80,11 +105,11 @@ class CartController extends Controller
     // Proses Simpan ke Database (Pengganti proses_checkout.php)
     public function prosesCheckout(Request $request)
     {
-        if(!session()->has('user_id')) {
+        if(!Auth::check()) {
             return redirect('/login')->with('error', 'Login dulu cuy sebelum checkout!');
         }
 
-        $userId = session('user_id');
+        $userId = Auth::id();
         $itemsWithDetails = DB::table('ec_keranjang')
             ->join('ec_produk', 'ec_keranjang.barang_id', '=', 'ec_produk.barang_id')
             ->where('ec_keranjang.user_id', $userId)
@@ -100,26 +125,29 @@ class CartController extends Controller
                 $total += $item->harga * $item->qty;
             }
 
-            // Insert ke tabel checkout utama
-            $checkoutId = DB::table('ec_transaksi')->insertGetId([
+            // 1. Buat transaksi baru menggunakan Model Transaksi
+            // Kolom 'tanggal_transaksi' akan diisi otomatis oleh Eloquent
+            $transaksi = Transaksi::create([
                 'user_id'            => $userId,
                 'total_harga'        => $total,
-                'tanggal_transaksi'  => now(),
                 'alamat_pengiriman'  => $request->input('alamat_pengiriman', '-'),
                 'metode_pembayaran'  => $request->input('metode_pembayaran', '-'),
                 'opsi_pengiriman'    => $request->input('opsi_pengiriman', '-'),
-                'status_pesanan'     => 'pending'   // ← ganti dari status_pembayaran
+                'status_pesanan'     => 'pending'
             ]);
 
-            // Insert item detailnya satu per satu
+            // 2. Siapkan semua item detail untuk dimasukkan ke database
+            $detailItems = [];
             foreach($itemsWithDetails as $item) {
-                DB::table('ec_detail_transaksi')->insert([
-                    'transaksi_id' => $checkoutId,
+                $detailItems[] = [
+                    'transaksi_id' => $transaksi->transaksi_id, // Ambil ID dari transaksi yang baru dibuat
                     'barang_id' => $item->barang_id,
                     'qty' => $item->qty,
                     'harga_satuan' => $item->harga
-                ]);
+                ];
             }
+            // 3. Masukkan semua item detail sekaligus menggunakan Model DetailTransaksi
+            DetailTransaksi::insert($detailItems);
 
             // Kosongkan keranjang dari database setelah sukses checkout
             DB::table('ec_keranjang')->where('user_id', $userId)->delete();

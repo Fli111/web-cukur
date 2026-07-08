@@ -56,7 +56,7 @@
                     
                     <div class="form-group">
                         <label>Alamat Pengiriman</label>
-                        <textarea id="address" name="alamat_pengiriman" rows="3" class="form-input" placeholder="Tulis alamat lengkap rumah lu..." required></textarea>
+                        <textarea id="address" name="alamat_pengiriman" rows="3" class="form-input" placeholder="Tulis alamat lengkap rumah" required></textarea>
                     </div>
 
                     <div class="form-group">

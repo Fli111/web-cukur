@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Barber; // Panggil model Barber di sini
+use App\Models\Barber;
+use App\Models\Produk;
 use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
@@ -63,20 +64,20 @@ class PageController extends Controller
     //ecommerce gilang
     public function ecommerceHomePage()
     {
-        $produk = DB::table('ec_produk')->orderBy('barang_id', 'desc')->get();
+        $produk = Produk::orderBy('barang_id', 'desc')->get();
         return view('ecommerceHomePage', compact('produk')); // resources/views/ec_home.blade.php
     }
 
     public function ecommerceProductPage()
     {
-        $powder  = DB::table('ec_produk')->where('kategori', 'Powder')->get();
-        $shampoo = DB::table('ec_produk')->where('kategori', 'Shampoo')->get();
+        $powder  = Produk::where('kategori', 'Powder')->get();
+        $shampoo = Produk::where('kategori', 'Shampoo')->get();
         return view('ecommerceProductPage', ['powder' => $powder, 'shampoo' => $shampoo]);
     }
 
     public function ecommerceProductDetail($id)
     {
-        $data = DB::table('ec_produk')->where('barang_id', $id)->first();
+        $data = Produk::find($id);
         if (!$data) {
             return redirect('/ecommerceProductPage');
         }

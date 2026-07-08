@@ -10,9 +10,6 @@
     <div class="navbar">
         <a href="/">MR. HARTONO</a>
         <div class="nav-menu">
-            <a href="/ecommerceProductPage">Shop All</a>  
-            <a href="#">Treatment</a> 
-
             @guest
                 <a href="{{ route('login') }}">Login</a>
             @else
@@ -22,6 +19,7 @@
                 @endif
                 <a href="{{ route('logout') }}" style="color: red; font-weight: bold;">Logout</a>
             @endguest
+            <a href="/ecommerceProductPage">Shop All</a>
 
             <a href="/ecommerceCartPage">Cart</a>
 
@@ -32,11 +30,29 @@
         </div>
     </div>
 
+    <div id="ajax-notification" style="display: none; position: fixed; top: 80px; right: 20px; background-color: #28a745; color: white; padding: 15px; border-radius: 8px; z-index: 1050; box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-weight: bold; font-size: 16px;"></div>
+
     @yield('content')
 
     <footer>
         Made By Kelompok 10 <br>
         Rafli Gilang Pasha
     </footer>
+
+    <script>
+    function showAjaxNotification(message, isSuccess = true) {
+        const notification = document.getElementById('ajax-notification');
+        if (notification) {
+            notification.textContent = message;
+            notification.style.backgroundColor = isSuccess ? '#28a745' : '#dc3545'; // Hijau untuk sukses, merah untuk error
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000); // Sembunyikan setelah 3 detik
+        }
+    }
+    </script>
+    @stack('scripts')
 </body>
 </html>
