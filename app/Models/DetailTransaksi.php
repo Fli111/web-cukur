@@ -38,4 +38,12 @@ class DetailTransaksi extends Model
         // Nanti kamu bisa buat model Produk dan hubungkan di sini
         return $this->belongsTo(Produk::class, 'barang_id', 'barang_id');
     }
+
+    /**
+     * Mendefinisikan relasi ke model Transaksi.
+     */
+    public function transaksi(): BelongsTo
+    {
+        return $this->belongsTo(Transaksi::class, 'transaksi_id', 'transaksi_id');
+    }
 }

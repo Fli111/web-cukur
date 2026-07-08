@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -53,5 +54,14 @@ class Transaksi extends Model
     {
         // Asumsi kamu akan membuat model DetailTransaksi juga
         return $this->hasMany(DetailTransaksi::class, 'transaksi_id', 'transaksi_id');
+    }
+
+    /**
+     * Mendefinisikan relasi "belongs-to" ke User.
+     * Satu transaksi dimiliki oleh satu user.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

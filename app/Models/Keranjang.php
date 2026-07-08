@@ -38,4 +38,12 @@ class Keranjang extends Model
     {
         return $this->belongsTo(Produk::class, 'barang_id', 'barang_id');
     }
+
+    /**
+     * Mendefinisikan relasi ke model User.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 }

@@ -110,49 +110,59 @@ class CartController extends Controller
         }
 
         $userId = Auth::id();
-        $itemsWithDetails = DB::table('ec_keranjang')
-            ->join('ec_produk', 'ec_keranjang.barang_id', '=', 'ec_produk.barang_id')
-            ->where('ec_keranjang.user_id', $userId)
-            ->get();
+        // Gunakan Eloquent untuk mengambil item keranjang beserta relasi produknya
+        $cartItems = Keranjang::with('produk')->where('user_id', $userId)->get();
 
-        if($itemsWithDetails->isEmpty()) {
-            return redirect('/productpage')->with('error', 'Keranjang kamu kosong!');
+        if($cartItems->isEmpty()) {
+            return redirect('/ecommerceProductPage')->with('error', 'Keranjang kamu kosong!');
         }
 
-        DB::transaction(function() use ($itemsWithDetails, $userId, $request) {
-            $total = 0;
-            foreach($itemsWithDetails as $item) {
-                $total += $item->harga * $item->qty;
-            }
+        try {
+            DB::transaction(function() use ($cartItems, $userId, $request) {
+                // Validasi stok semua item sebelum melanjutkan
+                foreach ($cartItems as $item) {
+                    // Kunci baris produk untuk mencegah race condition
+                    $produk = Produk::lockForUpdate()->find($item->barang_id);
+                    if ($produk->stok < $item->qty) {
+                        // Melempar exception akan otomatis membatalkan (rollback) transaksi
+                        throw new \Exception("Stok untuk produk '{$produk->nama_produk}' tidak mencukupi. Sisa stok: {$produk->stok}.");
+                    }
+                }
 
-            // 1. Buat transaksi baru menggunakan Model Transaksi
-            // Kolom 'tanggal_transaksi' akan diisi otomatis oleh Eloquent
-            $transaksi = Transaksi::create([
-                'user_id'            => $userId,
-                'total_harga'        => $total,
-                'alamat_pengiriman'  => $request->input('alamat_pengiriman', '-'),
-                'metode_pembayaran'  => $request->input('metode_pembayaran', '-'),
-                'opsi_pengiriman'    => $request->input('opsi_pengiriman', '-'),
-                'status_pesanan'     => 'pending'
-            ]);
+                // Hitung total harga dari item yang sudah divalidasi
+                $total = $cartItems->sum(fn($item) => $item->produk->harga * $item->qty);
 
-            // 2. Siapkan semua item detail untuk dimasukkan ke database
-            $detailItems = [];
-            foreach($itemsWithDetails as $item) {
-                $detailItems[] = [
-                    'transaksi_id' => $transaksi->transaksi_id, // Ambil ID dari transaksi yang baru dibuat
-                    'barang_id' => $item->barang_id,
-                    'qty' => $item->qty,
-                    'harga_satuan' => $item->harga
-                ];
-            }
-            // 3. Masukkan semua item detail sekaligus menggunakan Model DetailTransaksi
-            DetailTransaksi::insert($detailItems);
+                // 1. Buat transaksi baru
+                $transaksi = Transaksi::create([
+                    'user_id'            => $userId,
+                    'total_harga'        => $total,
+                    'alamat_pengiriman'  => $request->input('alamat_pengiriman', '-'),
+                    'metode_pembayaran'  => $request->input('metode_pembayaran', '-'),
+                    'opsi_pengiriman'    => $request->input('opsi_pengiriman', '-'),
+                    'status_pesanan'     => 'pending'
+                ]);
 
-            // Kosongkan keranjang dari database setelah sukses checkout
-            DB::table('ec_keranjang')->where('user_id', $userId)->delete();
-        });
+                // 2. Siapkan detail transaksi dan kurangi stok produk
+                foreach($cartItems as $item) {
+                    DetailTransaksi::create([
+                        'transaksi_id' => $transaksi->transaksi_id,
+                        'barang_id'    => $item->barang_id,
+                        'qty'          => $item->qty,
+                        'harga_satuan' => $item->produk->harga
+                    ]);
 
-        return redirect('/')->with('success', 'Checkout sukses! Pesanan sedang kami siapkan.');
+                    // 3. Kurangi stok produk (ini bagian yang paling penting)
+                    $item->produk->decrement('stok', $item->qty);
+                }
+
+                // 4. Kosongkan keranjang setelah checkout berhasil
+                Keranjang::where('user_id', $userId)->delete();
+            });
+        } catch (\Exception $e) {
+            // Jika terjadi error (misal: stok tidak cukup), kembali ke halaman keranjang dengan pesan error
+            return back()->with('error', $e->getMessage());
+        }
+
+        return redirect('/ecommerceProductPage')->with('success', 'Checkout sukses! Pesanan sedang kami siapkan.');
     }
-}
+            }
