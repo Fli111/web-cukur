@@ -13,7 +13,7 @@
             <a href="{{ route('home') }}">HOME</a>
             <a href="#">BOOK</a>
             <a href="#">PRODUCT</a>
-            <a class="navi" href="pilih-member.html">MEMBER</a>
+            <a class="navi" href="">MEMBER</a>
         </nav>
     </div> 
 
@@ -33,7 +33,7 @@
         <div class="member-platinum">
             <h2>Member Platinum</h2>
             <h3>Potongan Cukur 20%<br>Potongan Produk 15%<br></h3>
-            <a href="{{ route('payment', ['paket' => 'platinum']) }}" onclick="return cekLogin(event)">
+            <a href="{{ url('/payment?paket=platinum') }}" onclick="return cekLogin(event)">
                 <button class="tombol">JOIN <br> IDR 25K / bln</button>
             </a>
         </div>
@@ -41,7 +41,7 @@
         <div class="member-diamond">
             <h2>Member <br> Diamond</h2>
             <h3>Potongan Cukur 25%<br>Potongan Produk 20%<br></h3>
-            <a href="{{ route('payment', ['paket' => 'diamond']) }}" onclick="return cekLogin(event)">
+            <a href="{{ url('/payment?paket=diamond') }}" onclick="return cekLogin(event)">
                 <button class="tombol">JOIN <br> IDR 30K / bln</button>
             </a>
         </div>
@@ -53,7 +53,7 @@
             <p>Silahkan Login terlebih dahulu untuk bergabung dengan membership Mr. Hartono.</p>
             <div class="grup-tombol">
                 <button onclick="tutupModal()" class="tombol-tutup">KEMBALI</button>
-                <button onclick="simulasiLogin()" class="tombol-login-modal">LOGIN SEKARANG</button>
+                <button onclick="keHalamanLogin()" class="tombol-login-modal">LOGIN SEKARANG</button>
             </div>
         </div>
     </div>

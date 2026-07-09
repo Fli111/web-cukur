@@ -114,30 +114,31 @@
 
         <div class="sisi-kanan">
             <div class="wadah-kanan">
-                <p class="label-ringkasan">RINGKASAN PESANAN</p>
-                <h2 class="tipe-member">Platinum Member</h2>
-                <p class="jangka-member">KEANGGOTAAN BULANAN</p>
+    <p class="label-ringkasan">RINGKASAN PESANAN</p>
+    
+    <h2 class="tipe-member">{{ strtoupper($paket) }} Member</h2>
+    <p class="jangka-member">KEANGGOTAAN BULANAN</p>
 
-                <div class="detail-harga">
-                    <div class="baris-harga">
-                        <span>TARIF DASAR</span>
-                        <span>IDR 20.000</span>
-                    </div>
-                    <div class="baris-harga">
-                        <span>BIAYA AWAL</span>
-                        <span>IDR 20.000</span>
-                    </div>
-                </div>
+    <div class="detail-harga">
+        <div class="baris-harga">
+            <span>TARIF DASAR</span>
+            <span>IDR {{ number_format($harga, 0, ',', '.') }}</span>
+        </div>
+        <div class="baris-harga">
+            <span>BIAYA AWAL</span>
+            <span>IDR {{ number_format($harga, 0, ',', '.') }}</span>
+        </div>
+    </div>
 
-                <div class="bagian-total">
-                    <p>TOTAL PEMBAYARAN</p>
-                    <div class="jumlah-total">
-                        IDR 20.000
-                    </div>
-                </div>
+    <div class="bagian-total">
+        <p>TOTAL PEMBAYARAN</p>
+        <div class="jumlah-total">
+            IDR {{ number_format($harga, 0, ',', '.') }}
+        </div>
+    </div>
 
-                <button class="tombol-selesai">SELESAIKAN PEMBELIAN</button>
-            </div>
+    <button class="tombol-selesai">SELESAIKAN PEMBELIAN</button>
+</div>
         </div>
     </div>
 
