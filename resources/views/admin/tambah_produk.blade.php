@@ -35,8 +35,13 @@
             <div class="form-group">
                 <label>Kategori:</label>
                 <select name="kategori" class="form-input" required>
+                    {{-- 
+                        Fungsi `old('kategori')`untuk "mengingat" input yang sudah dipilih pengguna.
+                        Jika validasi gagal dan halaman me-refresh, kategori yang sebelumnya dipilih akan otomatis terpilih kembali,
+                        sehingga pengguna tidak perlu mengisi ulang semua data dari awal.
+                    --}}
                     <option value="" disabled selected>Pilih Kategori</option>
-                    <option value="Powder" {{ old('kategori') == 'Powder' ? 'selected' : '' }}>Powder</option>
+                    <option value="Powder" {{ old('kategori') == 'Powder' ? 'selected' : '' }}>Powder</option> 
                     <option value="Shampoo" {{ old('kategori') == 'Shampoo' ? 'selected' : '' }}>Shampoo</option>
                     <option value="Tools" {{ old('kategori') == 'Tools' ? 'selected' : '' }}>Tools</option>
                 </select>

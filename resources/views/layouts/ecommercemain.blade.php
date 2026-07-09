@@ -13,7 +13,7 @@
             @guest
                 <a href="{{ route('login') }}">Login</a>
             @else
-                <a>Halo {{ Auth::user()->nama }}, selamat berbelanja :D</a>
+                <a>Halo {{ Auth::user()->nama }}, selamat berbelanja</a>
                 @if(Auth::user()->role == 'admin')
                     <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                 @endif
