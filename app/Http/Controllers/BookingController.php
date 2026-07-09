@@ -55,28 +55,45 @@ class BookingController extends Controller
         }
 
         try {
-            // 2. Menerjemahkan format '01:45 PM' menjadi format MySQL '13:45:00'
+            // 2. Format Jam & Tanggal
             $jamDariForm = $request->input('jam');
             $jamUntukDatabase = date('H:i:s', strtotime($jamDariForm));
+            $tanggal = $request->input('tanggal');
+            $barberId = $request->input('artisan');
 
-            // 3. Simpan data menggunakan waktu yang sudah dikonversi
+            // 3. VALIDASI DOUBLE BOOKING
+            // Mengecek apakah sudah ada booking di tanggal dan jam yang sama
+            $isBooked = Booking::where('tanggal', $tanggal)
+                               ->where('waktu', $jamUntukDatabase)
+                               // Jika 1 kapster/barber tidak bisa dibooking bersamaan, aktifkan baris di bawah ini:
+                               ->where('barber_id', $barberId) 
+                               ->exists();
+
+            if ($isBooked) {
+                // Kembalikan ke halaman sebelumnya dengan pesan error
+                return response("<script>
+                    alert('Maaf, jadwal pada tanggal dan jam tersebut sudah penuh. Silakan pilih waktu lain.'); 
+                    window.history.back();
+                </script>");
+            }
+
+            // 4. SIMPAN DATA JIKA JADWAL KOSONG
             $booking = Booking::create([
                 'user_id'    => Auth::id(),
-                'barber_id'  => $request->input('artisan'),
-                'service_id' => $request->input('service_id'),
-                'tanggal'    => $request->input('tanggal'),
-                'waktu'      => $jamUntukDatabase, // Gunakan variabel yang sudah diubah formatnya
+                'barber_id'  => $barberId,
+                // PERBAIKAN BUG NULL: Mengambil dari name="service" sesuai dengan yang ada di form HTML
+                'service_id' => $request->input('service_id'), 
+                'tanggal'    => $tanggal,
+                'waktu'      => $jamUntukDatabase, 
                 'status'     => 'pending',
             ]);
 
-            // Jika sukses melewati Booking::create
             return response("<script>
                 alert('Booking berhasil dibuat!'); 
                 window.location.href='".url('/')."'; 
             </script>");
 
         } catch (\Exception $e) {
-            // Kita tetap biarkan try-catch ini untuk jaga-jaga kalau ada error lain
             dd([
                 "Pesan Error Database" => $e->getMessage(),
                 "Data yang dikirim dari Form HTML" => $request->all()

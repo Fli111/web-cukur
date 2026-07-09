@@ -18,13 +18,14 @@ class PageController extends Controller
 
     public function book(Request $request)
     {
+        $service_id = $request->query('service_id'); // Tangkap ID
         $service = $request->query('service');
         $price = $request->query('price');
         
-        // Ambil semua data barber dari database (menggantikan mysqli_query)
         $barbers = Barber::all();
         
-        return view('book', compact('service', 'price', 'barbers'));
+        // Tambahkan 'service_id' ke dalam compact
+        return view('book', compact('service_id', 'service', 'price', 'barbers'));
     }
 
     public function login()
@@ -50,18 +51,18 @@ class PageController extends Controller
     public function tanggalBook(Request $request)
     {
         $artisan = $request->query('artisan');
+        $service_id = $request->query('service_id'); // Tangkap ID
         $service = $request->query('service');
         $price = $request->query('price');
 
-        // Cari data barber berdasarkan ID (menggantikan query mysqli)
         $dataBarber = Barber::where('barber_id', $artisan)->first();
 
-        // Jika data tidak ada, kembalikan ke home
         if(!$dataBarber || empty($service) || empty($price)){
             return redirect()->route('home');
         }
 
-        return view('tanggal_book', compact('artisan', 'service', 'price', 'dataBarber'));
+        // Tambahkan 'service_id' ke dalam compact
+        return view('tanggal_book', compact('artisan', 'service_id', 'service', 'price', 'dataBarber'));
     }
 
 

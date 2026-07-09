@@ -148,7 +148,7 @@
                         <li>Signature pomade finish</li>
                     </ul>
 
-                    <a href="{{ route('book', ['service' => 'The Atelier Haircut', 'price' => '65k']) }}" class="btn-gold-menu">
+                    <a href="{{ route('book', ['service_id' => 1, 'service' => 'The Atelier Haircut', 'price' => '65k']) }}" class="btn-gold-menu">
                         SERVICE ORDER
                     </a>
                 </div>
@@ -177,9 +177,9 @@
                         <li>Aftershave care</li>
                     </ul>
 
-                    <a href="{{ route('book', ['service' => 'Ritual Hot Shave', 'price' => '55k']) }}" class="btn-gold-menu">
+                    <a href="{{ route('book', ['service_id' => 2, 'service' => 'Ritual Hot Shave', 'price' => '55k']) }}" class="btn-gold-menu">
                         SERVICE ORDER
-                    </a>
+                    </a>>
                 </div>
             </div>
         </div>
@@ -206,7 +206,7 @@
                         <li>Oil treatment</li>
                     </ul>
 
-                    <a href="{{ route('book', ['service' => 'Beard Sculpting', 'price' => '45k']) }}" class="btn-gold-menu">
+                    <a href="{{ route('book', ['service_id' => 3, 'service' => 'Beard Sculpting', 'price' => '45k']) }}" class="btn-gold-menu">
                         SERVICE ORDER
                     </a>
                 </div>
@@ -235,7 +235,7 @@
                         <li>Premium styling</li>
                     </ul>
 
-                    <a href="{{ route('book', ['service' => 'The Executive Package', 'price' => '110k']) }}" class="btn-gold-menu">
+                    <a href="{{ route('book', ['service_id' => 4, 'service' => 'The Executive Package', 'price' => '110k']) }}" class="btn-gold-menu">
                         SERVICE ORDER
                     </a>
                 </div>

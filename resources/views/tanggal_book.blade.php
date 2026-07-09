@@ -175,6 +175,11 @@
 
                 <input
                     type="hidden"
+                    name="service_id"
+                    value="{{ $service_id }}">
+
+                <input
+                    type="hidden"
                     name="service"
                     value="{{ $service }}">
 

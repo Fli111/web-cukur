@@ -99,26 +99,19 @@ cards.forEach(card => {
 });
 
 // Mengambil data dari controller menggunakan Blade syntax
+const service_id = "{{ $service_id }}";
 const service = "{{ $service }}";
 const price = "{{ $price }}";
 
 function goToBooking(){
-
     if (!selectedArtisan) {
-
         alert("Maaf, Anda belum memilih artisan.");
-
     } else {
-
-        // Menggunakan helper route() Laravel dipadukan dengan parameter JS
         window.location.href = 
-        "{{ route('tanggal_book') }}?artisan=" + 
-        encodeURIComponent(selectedArtisan) + 
-        "&service=" + 
-        encodeURIComponent(service) + 
-        "&price=" + 
-        encodeURIComponent(price);
-
+        "{{ route('tanggal_book') }}?artisan=" + encodeURIComponent(selectedArtisan) + 
+        "&service_id=" + encodeURIComponent(service_id) + // Tambahkan baris ini
+        "&service=" + encodeURIComponent(service) + 
+        "&price=" + encodeURIComponent(price);
     }
 
 }
