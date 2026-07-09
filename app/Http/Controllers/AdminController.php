@@ -24,6 +24,16 @@ class AdminController extends Controller
     // Proses Simpan Produk Baru
     public function store(Request $request)
     {
+        // Validasi input sebelum proses lebih lanjut
+        $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'kategori' => 'required|string',
+            'harga' => 'required|numeric|min:0',
+            'stok' => 'required|integer|min:0',
+            'gambar_produk' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'deskripsi_produk' => 'required|string',
+        ]);
+
         $gambar = $request->file('gambar_produk');
         $nama_file = time() . "_" . $gambar->getClientOriginalName();
         // Pindahkan file ke folder public/uploads
@@ -55,6 +65,16 @@ class AdminController extends Controller
     {
         $produk = Produk::find($id);
         if (!$produk) return redirect('/admin/dashboard');
+
+        // Validasi input sebelum proses update
+        $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'kategori' => 'required|string',
+            'harga' => 'required|numeric|min:0',
+            'stok' => 'required|integer|min:0',
+            'gambar_produk' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar boleh kosong saat update
+            'deskripsi_produk' => 'required|string',
+        ]);
 
         $data_update = [
             'nama_produk' => $request->nama_produk,
