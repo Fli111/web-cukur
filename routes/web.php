@@ -8,7 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\pilmemberController;
 
 // Rute untuk Halaman (Tampilan)
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -29,6 +29,8 @@ Route::get('/ecommerceProductDetail/{id}', [PageController::class, 'ecommercePro
 Route::get('/ecommerceHomePage', [PageController::class, 'ecommerceHomePage']);
 
 // Route Untuk Member
+Route::get('/pilih-member', [pilmemberController::class, 'index']);
+Route::get('/payment', [pilmemberController::class, 'payment'])->name('payment')->middleware('auth');
 Route::get('/dashboard', [PageController::class, 'index']);
 
 // --- RUTE KERANJANG, CHECKOUT, DAN HISTORY---
