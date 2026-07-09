@@ -320,35 +320,48 @@
     </div>
 
     <footer class="footer" id="contact">
-        <h3>THE MODERN ATELIER</h3>
+    <h3>THE MODERN ATELIER</h3>
 
-        <div class="footer-grid">
-            <div>
-                <p class="label">VISIT US</p>
-                <p>124 Precision Blvd, Atelier District</p>
-            </div>
-
-            <div>
-                <p class="label">INQUIRIES</p>
-                <p>studio@mrhartono.com</p>
-            </div>
-
-            <div>
-                <p class="label">DIRECT LINE</p>
-                <p>+1 202 555 0192</p>
-            </div>
+    <div class="footer-grid">
+        <div>
+            <p class="label">VISIT US</p>
+            <p>124 Precision Blvd, Atelier District</p>
         </div>
 
-        <div class="footer-links">
-            <a href="#">PRIVACY POLICY</a>
-            <a href="#">TERMS OF SERVICE</a>
-            <a href="#">CAREERS</a>
+        <div>
+            <p class="label">INQUIRIES</p>
+            <p>studio@mrhartono.com</p>
         </div>
 
-        <p class="copyright">
-            © 2025 THE MODERN ATELIER. ALL RIGHTS RESERVED.
+        <div>
+            <p class="label">DIRECT LINE</p>
+            <p>+1 202 555 0192</p>
+        </div>
+    </div>
+
+    <div class="footer-links">
+        <a href="#">PRIVACY POLICY</a>
+        <a href="#">TERMS OF SERVICE</a>
+        <a href="#">CAREERS</a>
+    </div>
+
+    <p class="copyright">
+        © 2025 THE MODERN ATELIER. ALL RIGHTS RESERVED.
+    </p>
+
+    <!-- Tambahan sesuai permintaan dosen -->
+    <div class="footer-info">
+        <p><strong>Hartono Barbershop</strong></p>
+        <p>
+            Raihan Reditya - 20240801096 |
+            Rafli Gilang Pasha - 20240801184 |
+            Ahmad Rifki Pramadhika - 20240801190
         </p>
-    </footer>
+        <p>Dosen Pengampu MK: Dewi Setiowati, A.Md., S.Pd., M.Tr.Kom.</p>
+        <p>Kelas: KH001</p>
+        <p>Tahun Akademik: 2025/2026 Genap</p>
+    </div>
+</footer>
     <script>
     function toggleMenu(el) {
         const parent = el.parentElement;

@@ -507,6 +507,20 @@ body{
     color: #d4a95a;
 }
 
+.footer-info {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    font-size: 14px;
+    color: #ccc;
+    text-align: center;
+    line-height: 1.8;
+}
+
+.footer-info p {
+    margin: 4px 0;
+}
+
 .copyright{
     font-size: 11px;
     color: #555;
