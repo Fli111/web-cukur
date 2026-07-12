@@ -7,26 +7,50 @@ use App\Models\Barber;
 use App\Models\Service;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
-    // 1. Menampilkan daftar Barber
-    public function showBarbers(Request $request) 
+    // ================================================================
+    // HELPER: Ambil info diskon cukur berdasarkan user_id
+    // ================================================================
+    private function getDiskonCukur($userId)
     {
-        // Menggunakan Eloquent untuk mengambil semua data barber
-        $barbers = Barber::all(); 
-        $service_id = $request->query('service_id');
+        // Cek tier dari yang tertinggi dulu
+        if (DB::table('diamond')->where('user_id', $userId)->exists()) {
+            $tier = 'diamond';
+        } elseif (DB::table('platinum')->where('user_id', $userId)->exists()) {
+            $tier = 'platinum';
+        } elseif (DB::table('gold')->where('user_id', $userId)->exists()) {
+            $tier = 'gold';
+        } else {
+            return ['tier' => null, 'persen' => 0]; // Bukan member, tidak ada diskon
+        }
 
-        // Pastikan kamu punya file blade di: resources/views/book.blade.php
+        $data = DB::table('member_tiers')->where('tier', $tier)->first();
+        return [
+            'tier'  => $tier,
+            'persen' => $data ? $data->diskon_cukur : 0
+        ];
+    }
+
+    // ================================================================
+    // 1. Tampilkan daftar Barber
+    // ================================================================
+    public function showBarbers(Request $request)
+    {
+        $barbers    = Barber::all();
+        $service_id = $request->query('service_id');
         return view('book', compact('barbers', 'service_id'));
     }
 
-    // 2. Menampilkan halaman pilih tanggal
-    public function showTanggal(Request $request) 
+    // ================================================================
+    // 2. Tampilkan halaman pilih tanggal
+    // ================================================================
+    public function showTanggal(Request $request)
     {
-        // Cek login ala Laravel
         if (!Auth::check()) {
-            return redirect()->route('home'); // Pastikan route 'home' sudah diberi nama di web.php
+            return redirect()->route('home');
         }
 
         $artisan_id = $request->query('artisan');
@@ -36,67 +60,78 @@ class BookingController extends Controller
             return redirect()->route('home');
         }
 
-        $dataBarber = Barber::find($artisan_id);
+        $dataBarber  = Barber::find($artisan_id);
         $dataService = Service::find($service_id);
 
-        // Pastikan kamu punya file blade di: resources/views/tanggal_book.blade.php
-        return view('tanggal_book', compact('dataBarber', 'dataService'));
+        // Hitung preview diskon untuk ditampilkan di halaman pilih tanggal
+        $diskonInfo  = $this->getDiskonCukur(Auth::id());
+        $potongan    = (int) ($dataService->harga * $diskonInfo['persen'] / 100);
+        $hargaFinal  = $dataService->harga - $potongan;
+
+        return view('tanggal_book', compact('dataBarber', 'dataService', 'diskonInfo', 'potongan', 'hargaFinal'));
     }
 
-    // 3. Memproses Booking (Sesuai dengan error trace sebelumnya, metodenya bernama 'store')
-    public function store(Request $request) 
+    // ================================================================
+    // 3. Proses Booking dengan Diskon Member
+    // ================================================================
+    public function store(Request $request)
     {
-        // 1. Cek Login
         if (!Auth::check()) {
             return response("<script>
-                alert('Sistem mendeteksi kamu belum login! Silakan login ulang.'); 
+                alert('Sistem mendeteksi kamu belum login! Silakan login ulang.');
                 window.history.back();
             </script>");
         }
 
         try {
-            // 2. Format Jam & Tanggal
-            $jamDariForm = $request->input('jam');
+            $jamDariForm      = $request->input('jam');
             $jamUntukDatabase = date('H:i:s', strtotime($jamDariForm));
-            $tanggal = $request->input('tanggal');
-            $barberId = $request->input('artisan');
+            $tanggal          = $request->input('tanggal');
+            $barberId         = $request->input('artisan');
+            $serviceId        = $request->input('service_id');
+            $userId           = Auth::id();
 
-            // 3. VALIDASI DOUBLE BOOKING
-            // Mengecek apakah sudah ada booking di tanggal dan jam yang sama
+            // Validasi double booking
             $isBooked = Booking::where('tanggal', $tanggal)
                                ->where('waktu', $jamUntukDatabase)
-                               // Jika 1 kapster/barber tidak bisa dibooking bersamaan, aktifkan baris di bawah ini:
-                               ->where('barber_id', $barberId) 
+                               ->where('barber_id', $barberId)
                                ->exists();
 
             if ($isBooked) {
-                // Kembalikan ke halaman sebelumnya dengan pesan error
                 return response("<script>
-                    alert('Maaf, jadwal pada tanggal dan jam tersebut sudah penuh. Silakan pilih waktu lain.'); 
+                    alert('Maaf, jadwal pada tanggal dan jam tersebut sudah penuh. Silakan pilih waktu lain.');
                     window.history.back();
                 </script>");
             }
 
-            // 4. SIMPAN DATA JIKA JADWAL KOSONG
-            $booking = Booking::create([
-                'user_id'    => Auth::id(),
-                'barber_id'  => $barberId,
-                // PERBAIKAN BUG NULL: Mengambil dari name="service" sesuai dengan yang ada di form HTML
-                'service_id' => $request->input('service_id'), 
-                'tanggal'    => $tanggal,
-                'waktu'      => $jamUntukDatabase, 
-                'status'     => 'pending',
+            // === HITUNG DISKON MEMBER ===
+            $service     = Service::find($serviceId);
+            $diskonInfo  = $this->getDiskonCukur($userId);
+            $persen      = $diskonInfo['persen'];
+            $potongan    = (int) ($service->harga * $persen / 100);
+            $hargaFinal  = $service->harga - $potongan;
+
+            // Simpan booking beserta info diskon
+            Booking::create([
+                'user_id'      => $userId,
+                'barber_id'    => $barberId,
+                'service_id'   => $serviceId,
+                'tanggal'      => $tanggal,
+                'waktu'        => $jamUntukDatabase,
+                'status'       => 'pending',
+                'harga_final'  => $hargaFinal,   // harga setelah diskon
+                'diskon_persen'=> $persen,        // % diskon yang dipakai
             ]);
 
             return response("<script>
-                alert('Booking berhasil dibuat!'); 
-                window.location.href='".url('/')."'; 
+                alert('Booking berhasil! Harga: Rp " . number_format($hargaFinal, 0, ',', '.') . " (diskon {$persen}%)');
+                window.location.href='" . url('/') . "';
             </script>");
 
         } catch (\Exception $e) {
             dd([
-                "Pesan Error Database" => $e->getMessage(),
-                "Data yang dikirim dari Form HTML" => $request->all()
+                "Pesan Error" => $e->getMessage(),
+                "Data Form"   => $request->all()
             ]);
         }
     }

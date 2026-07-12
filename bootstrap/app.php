@@ -12,7 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Daftarkan alias middleware di sini
+        // Exclude CSRF untuk semua callback Midtrans
+        $middleware->validateCsrfTokens(except: [
+            'midtrans/callback',           // callback ecommerce
+            'midtrans/member/callback',    // callback member
+        ]);
+
         $middleware->alias([
             'admin' => AdminCheck::class,
         ]);

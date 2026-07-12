@@ -38,12 +38,17 @@ class Transaksi extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'order_id',
         'user_id',
         'total_harga',
+        'diskon_persen',      // ← tambah ini
+        'potongan_harga',     // ← tambah ini
         'alamat_pengiriman',
         'metode_pembayaran',
         'opsi_pengiriman',
         'status_pesanan',
+        'payment_status',     // ← tambah ini
+        'snap_token',  
     ];
 
     /**

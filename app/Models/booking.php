@@ -20,5 +20,7 @@ class Booking extends Model
         'tanggal',
         'waktu',
         'status',
+        'harga_final',    // ← tambah ini
+        'diskon_persen',  // ← tambah ini
     ];
 }

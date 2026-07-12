@@ -46,6 +46,50 @@
                 @endforeach
             </div>
 
+            <div class="order-summary">
+ 
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>Rp {{ number_format($subtotal ?? $total, 0, ',', '.') }}</span>
+                </div>
+            
+                {{-- Tampilkan baris diskon HANYA kalau user adalah member --}}
+                @if(isset($diskonInfo) && $diskonInfo['persen'] > 0)
+                    <div class="summary-row diskon-row">
+                        <span>
+                            Diskon Member 
+                            <span class="badge-tier badge-{{ $diskonInfo['tier'] }}">
+                                {{ strtoupper($diskonInfo['tier']) }}
+                            </span>
+                            ({{ $diskonInfo['persen'] }}%)
+                        </span>
+                        <span class="diskon-amount">- Rp {{ number_format($potongan, 0, ',', '.') }}</span>
+                    </div>
+                @endif
+            
+                <div class="summary-row total-row">
+                    <span><strong>Total Bayar</strong></span>
+                    <span><strong>Rp {{ number_format($total, 0, ',', '.') }}</strong></span>
+                </div>
+            
+            </div>
+            
+            {{-- CSS tambahan untuk badge tier (taruh di style.css kalau mau) --}}
+            <style>
+            .diskon-row { color: #28a745; }
+            .diskon-amount { font-weight: bold; }
+            .badge-tier {
+                display: inline-block;
+                padding: 2px 8px;
+                border-radius: 10px;
+                font-size: 11px;
+                font-weight: bold;
+            }
+            .badge-gold     { background: #FFD700; color: #000; }
+            .badge-platinum { background: #E5E4E2; color: #000; }
+            .badge-diamond  { background: #b9f2ff; color: #000; }
+            </style>
+
             <!-- Kolom Kanan: Summary & Form Checkout -->
             <div class="summary-card">
                 <h2 style="margin-top:0; font-size: 22px;">Informasi Pengiriman</h2>

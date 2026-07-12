@@ -9,6 +9,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\pilmemberController;
+use App\Http\Controllers\MidtransCallbackController;
 
 // Rute untuk Halaman (Tampilan)
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -29,9 +30,14 @@ Route::get('/ecommerceProductDetail/{id}', [PageController::class, 'ecommercePro
 Route::get('/ecommerceHomePage', [PageController::class, 'ecommerceHomePage']);
 
 // Route Untuk Member
-Route::get('/pilih-member', [pilmemberController::class, 'index']);
+Route::get('/pilih-member', [pilmemberController::class, 'index'])->name('pilih.member');
 Route::get('/payment', [pilmemberController::class, 'payment'])->name('payment')->middleware('auth');
-Route::get('/dashboard', [PageController::class, 'index']);
+Route::get('/member/finish', [pilmemberController::class, 'finish'])->name('member.finish');
+ 
+// Callback dari server Midtrans (TIDAK pakai middleware auth & EXCLUDE CSRF)
+Route::post('/midtrans/callback', [MidtransCallbackController::class, 'handle'])->name('midtrans.callback');
+Route::get('/checkout/payment', [CartController::class, 'paymentPage'])->name('ecommerceCheckoutPayment');
+Route::get('/checkout/finish', [CartController::class, 'finish'])->name('ecommerceCheckoutFinish');
 
 // --- RUTE KERANJANG, CHECKOUT, DAN HISTORY---
 Route::get('/ecommerceCartPage', [CartController::class, 'showCart']);
@@ -55,3 +61,4 @@ Route::middleware(['admin'])->group(function () {
     // Hapus Produk
     Route::get('/admin/produk/hapus/{id}', [AdminController::class, 'destroy'])->name('admin.produk.hapus');
 });
+
