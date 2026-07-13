@@ -51,6 +51,12 @@
             </div>
             <div class="history-card-footer">
                 <span>Total Pesanan: Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</span>
+                @if(strtolower($transaksi->status_pesanan) === 'pending' && $transaksi->snap_token)
+                    <a href="{{ route('ecommerceCheckoutPayment', ['order_id' => $transaksi->order_id]) }}" 
+                        class="btn-hitam" style="font-size:13px; padding: 8px 16px;">
+                        LANJUTKAN PEMBAYARAN
+                    </a>
+                @endif
             </div>
         </div>
     @empty

@@ -61,6 +61,7 @@ class MidtransCallbackController extends Controller
             $transaksi->update([
                 'payment_status' => $paymentStatus,
                 'status_pesanan' => $statusPesanan,
+                'metode_pembayaran' => $payload['payment_type'] ?? 'Midtrans',
             ]);
 
             if ($paymentStatus === 'paid') {

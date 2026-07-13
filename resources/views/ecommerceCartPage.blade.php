@@ -104,14 +104,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Metode Pembayaran</label>
-                        <select name="metode_pembayaran" class="form-input">
-                            <option value="BCA" selected>Transfer Bank BCA</option>
-                            <option value="BNI">Transfer Bank BNI</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
                         <label>Opsi Pengiriman</label>
                         <div class="radio-group">
                             <label><input type="radio" name="opsi_pengiriman" value="Fast" checked required> Fast Delivery</label>

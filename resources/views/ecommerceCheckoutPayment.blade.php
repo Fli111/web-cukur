@@ -96,11 +96,6 @@
     @endif
 
     <script>
-        // Auto buka popup langsung saat halaman dimuat
-        window.addEventListener('load', function() {
-            bukaSnap();
-        });
-
         function bukaSnap() {
             snap.pay('{{ $snapToken }}', {
                 onSuccess: function(result) {

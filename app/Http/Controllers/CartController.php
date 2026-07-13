@@ -38,7 +38,7 @@ class CartController extends Controller
     // ================================================================
     // HELPER: Buat Snap Token Midtrans
     // ================================================================
-    private function buatSnapToken($orderId, $total, $cartItems, $user, $diskonInfo)
+    private function buatSnapToken($orderId, $total, $cartItems, $user, $diskonInfo, $alamat)
     {
         $serverKey = env('MIDTRANS_SERVER_KEY');
         $isSandbox = env('MIDTRANS_IS_PRODUCTION', false) ? '' : '.sandbox';
@@ -73,7 +73,15 @@ class CartController extends Controller
             'customer_details' => [
                 'first_name' => $user->nama,
                 'email'      => $user->email,
-            ],
+                'shipping_address' => [
+                    'first_name' => $user->nama,
+                    'email'      => $user->email,
+                    'address'    => $alamat,    // ← dari form
+                    'city'       => '-',
+                    'postal_code'=> '-',
+                    'country_code' => 'IDN',
+                    ],
+                ],
             'callbacks' => [
                 'finish' => route('ecommerceCheckoutFinish'),
             ],
@@ -216,6 +224,7 @@ class CartController extends Controller
         $potongan   = (int) ($subtotal * $persen / 100);
         $total      = $subtotal - $potongan;
         $orderId    = 'HARTONO-' . $userId . '-' . time();
+        $alamat     = $request->input('alamat_pengiriman', '-');
 
         // Simpan transaksi pending dulu
         $transaksi = Transaksi::create([
@@ -242,7 +251,7 @@ class CartController extends Controller
         }
 
         // Generate Snap Token
-        $snapToken = $this->buatSnapToken($orderId, $total, $cartItems, $user, $diskonInfo);
+        $snapToken = $this->buatSnapToken($orderId, $total, $cartItems, $user, $diskonInfo, $alamat);
 
         if (!$snapToken) {
             $transaksi->delete();
@@ -329,6 +338,7 @@ class CartController extends Controller
             $transaksi->update([
                 'payment_status' => $paymentStatus,
                 'status_pesanan' => $statusPesanan,
+                'metode_pembayaran' => $payload['payment_type'] ?? 'Midtrans',
             ]);
 
             // Kurangi stok hanya saat pembayaran sukses
