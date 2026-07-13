@@ -16,7 +16,10 @@ return new class extends Migration
             $table->integer('user_id')->index('fk_memtrans_user');
             $table->string('nama', 100)->nullable();
             $table->string('jenis', 20)->nullable();
+            $table->string('metode_pembayaran', 50)->nullable();
             $table->dateTime('waktu_pembayaran')->nullable()->useCurrent();
+            $table->string('order_id')->nullable();
+            $table->string('status', 20)->nullable()->default('pending');
         });
     }
 

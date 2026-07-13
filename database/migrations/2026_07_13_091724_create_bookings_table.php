@@ -19,6 +19,8 @@ return new class extends Migration
             $table->date('tanggal')->nullable();
             $table->time('waktu')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'done', 'cancelled'])->nullable()->default('pending');
+            $table->integer('harga_final')->nullable();
+            $table->integer('diskon_persen')->default(0);
             $table->timestamp('created_at')->useCurrent();
         });
     }
