@@ -348,20 +348,84 @@
     <p class="copyright">
         © 2025 THE MODERN ATELIER. ALL RIGHTS RESERVED.
     </p>
-
-    <!-- Tambahan sesuai permintaan dosen -->
-    <div class="footer-info">
-        <p><strong>Hartono Barbershop</strong></p>
-        <p>
-            Raihan Reditya - 20240801096 |
-            Rafli Gilang Pasha - 20240801184 |
-            Ahmad Rifki Pramadhika - 20240801190
-        </p>
-        <p>Dosen Pengampu MK: Dewi Setiowati, A.Md., S.Pd., M.Tr.Kom.</p>
-        <p>Kelas: KH001</p>
-        <p>Tahun Akademik: 2025/2026 Genap</p>
-    </div>
 </footer>
+<footer class="footer-container-team">
+        <div class="footer-grid-team">
+            
+            <!-- Kolom 1: Brand & Tim -->
+            <div class="col-1-team">
+                <h1 class="brand-title-team">Hartono Barbershop</h1>
+                <p class="brand-desc-team">
+                    Where heritage craftsmanship meets academic excellence. A signature identity for the modern individual.
+                </p>
+
+                <h2 class="section-subtitle-team">The Creative Team</h2>
+                <ul class="team-list-team">
+                    <li><span class="team-name-team">Raihan Reditya</span> <span class="team-separator-team">&mdash;</span> 20240801096</li>
+                    <li><span class="team-name-team">Rafli Gilang Pasha</span> <span class="team-separator-team">&mdash;</span> 20240801184</li>
+                    <li><span class="team-name-team">Ahmad Rifki Pramadhika</span> <span class="team-separator-team">&mdash;</span> 20240801190</li>
+                </ul>
+            </div>
+
+            <!-- Kolom 2: Info Akademik & Sosial Media -->
+            <div class="col-2-team">
+                <h2 class="section-subtitle-team">Academic Context</h2>
+                
+                <div class="academic-section-team">
+                    <p class="academic-label-team">Dosen Pengampu MK</p>
+                    <p class="academic-value-team">Dewi Setiowati, A.Md., S.Pd., M.Tr.Kom.</p>
+                </div>
+
+                <div class="academic-row-team">
+                    <div class="academic-section-team">
+                        <p class="academic-label-team">Kelas</p>
+                        <p class="academic-value-team">KH001</p>
+                    </div>
+                    <div class="academic-section-team">
+                        <p class="academic-label-team">Tahun Akademik</p>
+                        <p class="academic-value-team">2025/2026 Genap</p>
+                    </div>
+                </div>
+
+                <div class="social-links-team">
+                    <!-- Icon Dribbble / Web -->
+                    <a href="#" class="social-btn-team" aria-label="Website">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"></path>
+                        </svg>
+                    </a>
+                    <!-- Icon Globe -->
+                    <a href="#" class="social-btn-team" aria-label="Globe">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </a>
+                    <!-- Icon Mail -->
+                    <a href="#" class="social-btn-team" aria-label="Email">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Kolom 3: Menu Atelier -->
+            <div class="col-3-team">
+                <h2 class="section-subtitle-team">Atelier</h2>
+                <ul class="nav-links-team">
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Gallery</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </footer>
     <script>
     function toggleMenu(el) {
         const parent = el.parentElement;

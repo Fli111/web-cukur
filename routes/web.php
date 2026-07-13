@@ -50,6 +50,9 @@ Route::middleware(['admin'])->group(function () {
     // Dashboard Admin
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     
+    // Jadwal Booking Admin (Route Baru)
+    Route::get('/admin/bookings', [AdminController::class, 'bookings'])->name('admin.bookings');
+    
     // Tambah Produk
     Route::get('/admin/produk/tambah', [AdminController::class, 'create'])->name('admin.produk.tambah');
     Route::post('/admin/produk/simpan', [AdminController::class, 'store'])->name('admin.produk.simpan');
@@ -61,4 +64,3 @@ Route::middleware(['admin'])->group(function () {
     // Hapus Produk
     Route::get('/admin/produk/hapus/{id}', [AdminController::class, 'destroy'])->name('admin.produk.hapus');
 });
-

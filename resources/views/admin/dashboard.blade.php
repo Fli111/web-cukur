@@ -15,6 +15,7 @@
             <a href="#" class="pill-item active">Produk</a>
             <a href="#" class="pill-item">Transaksi</a>
             <a href="#" class="pill-item">Pelanggan</a>
+            <a href="{{ route('admin.bookings') }}" class="pill-item">Jadwal Bookings</a>
         </div>
         <div class="pill-nav">
             <a href="/" class="pill-item">Lihat Web</a>

@@ -506,20 +506,194 @@ body{
 .footer-links a:hover{
     color: #d4a95a;
 }
+/* Import Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
 
-.footer-info {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.2);
-    font-size: 14px;
-    color: #ccc;
-    text-align: center;
-    line-height: 1.8;
-}
+        /* CSS Variables */
+        :root {
+            --bg-dark: #0f0f0f;
+            --text-gold: #c69c61;
+            --text-title: #f0b764;
+            --text-light: #e5e5e5;
+            --text-gray: #a3a3a3;
+            --border-color: #2a2a2a;           
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+/* Footer Container */
+        .footer-container-team {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(#111);
+        }
 
-.footer-info p {
-    margin: 4px 0;
-}
+        .footer-grid-team {
+            display: grid;
+            grid-template-columns: 1.2fr 1.3fr 0.5fr;
+            gap: 60px;
+            padding: 40px 0;
+        }
+
+        /* Shared Section Styles */
+        .section-subtitle-team {
+            font-family: var(--font-sans);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-gold);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 24px;
+        }
+
+        /* Column 1: Brand & Team */
+        .brand-title-team {
+            font-family: var(--font-serif);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-desc-team {
+            font-size: 11px;
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 320px;
+        }
+
+        .team-list-team {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .team-list-team li {
+            font-size: 11px;
+            color: var(--text-gray);
+        }
+
+        .team-list-team .team-name-team {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 11px;
+        }
+
+        .team-list-team .team-separator-team {
+            margin: 0 4px;
+        }
+
+        /* Column 2: Academic Context */
+        .academic-section-team {
+            margin-bottom: 30px;
+        }
+
+        .academic-label-team {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .academic-value-team {
+            font-family: var(--font-serif);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .academic-row-team {
+            display: flex;
+            gap: 60px;
+            margin-top: 24px;
+        }
+
+        /* Social Icons */
+        .social-links-team {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .social-btn-team {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background-color: transparent;
+        }
+
+        .social-btn-team:hover {
+            border-color: var(--text-gold);
+            color: var(--text-title);
+            background-color: rgba(198, 156, 97, 0.1);
+        }
+
+        .social-btn-team svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Column 3: Atelier / Navigation */
+        .nav-links-team {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .nav-links-team a {
+            font-family: var(--font-sans);
+            font-size: 11px;
+            font-weight: 300;
+            color: var(--text-light);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links-team a:hover {
+            color: var(--text-gold);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .footer-grid-team {
+                grid-template-columns: 1fr 1fr;
+            }
+            .col-3-team {
+                grid-column: 1 / -1;
+                margin-top: -20px;
+            }
+            .nav-links-team {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid-team {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            .academic-row-team {
+                gap: 30px;
+            }
+        }
 
 .copyright{
     font-size: 11px;

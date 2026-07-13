@@ -23,4 +23,21 @@ class Booking extends Model
         'harga_final',    // ← tambah ini
         'diskon_persen',  // ← tambah ini
     ];
+    // Relasi ke tabel users
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
+    // Relasi ke tabel barbers
+    public function barber()
+    {
+        return $this->belongsTo(Barber::class, 'barber_id', 'barber_id');
+    }
+
+    // Relasi ke tabel services
+    public function service()
+    {
+        return $this->belongsTo(Service::class, 'service_id', 'service_id');
+    }
 }
