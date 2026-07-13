@@ -106,7 +106,7 @@ class MidtransCallbackController extends Controller
             return response()->json(['message' => 'Already activated'], 200);
         }
 
-        DB::transaction(function() use ($userId, $paket, $user) {
+        DB::transaction(function() use ($userId, $paket, $user, $orderId, $payload) {
             // 1. Insert ke tabel tier
             DB::table($paket)->insert([
                 'user_id'    => $userId,
@@ -117,10 +117,13 @@ class MidtransCallbackController extends Controller
 
             // 2. Catat di mem_transaksi
             DB::table('mem_transaksi')->insert([
-                'user_id'          => $userId,
-                'nama'             => $user->nama,
-                'jenis'            => $paket,
-                'waktu_pembayaran' => now(),
+                'user_id'           => $userId,
+                'nama'              => $user->nama,
+                'jenis'             => $paket,
+                'metode_pembayaran' => $payload['payment_type'] ?? 'Midtrans',
+                'waktu_pembayaran'  => now(),
+                'order_id'          => $orderId,
+                'status'            => 'paid',
             ]);
 
             // 3. Update role jadi member

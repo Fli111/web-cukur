@@ -191,6 +191,8 @@ class pilmemberController extends Controller
                 'nama'            => $user->nama,
                 'jenis'           => $paket,
                 'waktu_pembayaran'=> now(),
+                'order_id'        => $orderId,
+                'status'          => 'pending',
             ]);
 
             // 3. Update role user jadi 'member' kalau belum
