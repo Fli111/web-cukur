@@ -129,7 +129,7 @@
             ALREADY A MEMBER?
 
             <a href="#"
-            onclick="window.parent.document.getElementById('popupFrame').src='login.php'">
+            onclick="window.parent.document.getElementById('popupFrame').src='{{ route('login') }}'">
                 SIGN IN
             </a>
         </p>
