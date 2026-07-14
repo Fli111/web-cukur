@@ -8,7 +8,7 @@
 /* Table Grid Booking */
 .table-header-grid, .table-row-grid {
     display: grid;
-    grid-template-columns: 0.8fr 1.5fr 1.5fr 1.2fr 1.2fr 1fr 1fr;
+    grid-template-columns: 0.8fr 1.5fr 1.5fr 1fr 1.2fr 1.2fr 1fr 1fr;
     padding: 20px 30px;
     gap: 15px;
     align-items: center;
@@ -185,12 +185,16 @@
 /* Responsive */
 @media (max-width: 1100px) {
     .table-header-grid, .table-row-grid {
-        grid-template-columns: 1fr 1.5fr 1.2fr 1fr;
+        /* Menampilkan: ID, Nama, Tanggal, Jam, Status */
+        grid-template-columns: 0.8fr 1.5fr 1.2fr 1fr 1fr;
     }
+    /* Menyembunyikan kolom ke-3 (Layanan), ke-4 (Harga), dan ke-5 (Barber) */
     .table-header-grid div:nth-child(3),
     .table-row-grid div:nth-child(3),
     .table-header-grid div:nth-child(4),
-    .table-row-grid div:nth-child(4) {
+    .table-row-grid div:nth-child(4),
+    .table-header-grid div:nth-child(5),
+    .table-row-grid div:nth-child(5) {
         display: none;
     }
 }
@@ -221,7 +225,7 @@
         <div>ID Booking</div>
         <div>Nama Pelanggan</div>
         <div>Layanan (Service)</div>
-        <div>Artisan (Barber)</div>
+        <div>Harga</div> <div>Artisan (Barber)</div>
         <div>Tanggal</div>
         <div>Waktu / Jam</div>
         <div>Status</div>
@@ -233,6 +237,9 @@
             <div class="booking-id">#{{ $booking->book_id }}</div>
             <div>{{ optional($booking->user)->nama ?? 'Tamu/User Dihapus' }}</div>
             <div>{{ optional($booking->service)->nama_service ?? 'Layanan Tidak Diketahui' }}</div>
+            
+            <div>Rp {{ number_format(optional($booking->service)->harga ?? 0, 0, ',', '.') }}</div>
+            
             <div>{{ optional($booking->barber)->nama ?? 'Belum Pilih Barber' }}</div>
             <div>{{ \Carbon\Carbon::parse($booking->tanggal)->format('d M Y') }}</div>
             <div>{{ \Carbon\Carbon::parse($booking->waktu)->format('H:i') }} WIB</div>
@@ -265,7 +272,7 @@
             </div>
             <div class="stat-item">
                 <p>Revenue Forecast</p>
-                <h5 class="gold">IDR {{ number_format($bookings->count() * 150000, 0, ',', '.') }}</h5>
+                <h5 class="gold">IDR {{ number_format($bookings->count() * 65000, 0, ',', '.') }}</h5>
             </div>
         </div>
         <div class="footer-entries">
@@ -294,5 +301,4 @@
         <div class="quote-image"></div>
     </div>
 </section>
-
 @endsection
