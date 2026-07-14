@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('user_id')->index('fk_platinum_user');
             $table->string('nama', 100);
             $table->string('gmail', 100);
-            $table->string('platinum_id', 20)->nullable()->virtualAs('concat(\'Platinum-\',`id`)');
+            $table->string('platinum_id', 20)->nullable();
             $table->dateTime('tgl_daftar')->nullable()->useCurrent();
         });
     }
