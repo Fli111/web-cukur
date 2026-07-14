@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account - The Atelier</title>
-    <script src="script.js" defer></script>
-    <link rel="stylesheet" href="style1.css">
+    <script src="{{ asset('script.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('style1.css') }}">
 </head>
 
 <body>
@@ -41,7 +41,7 @@
 
             <div class="quote-box-create">
 
-                <img src="img/hero.jpeg" alt="">
+                <img src="{{ asset('img/hero.jpeg') }}" alt="">
 
                 <div>
 

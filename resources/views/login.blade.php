@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mr. Hartono Login</title>
-    <link rel="stylesheet" href="style1.css">
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="{{ asset('style1.css') }}">
+    <script src="{{ asset('script.js') }}" defer></script>
 </head>
 <body>
 
