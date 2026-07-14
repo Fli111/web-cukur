@@ -109,12 +109,12 @@ class MidtransCallbackController extends Controller
         DB::transaction(function() use ($userId, $paket, $user, $orderId, $payload) {
             // 1. Insert ke tabel tier
             DB::table($paket)->insert([
-                'user_id'    => $userId,
-                'nama'       => $user->nama,
-                'gmail'      => $user->email,
-                'tgl_daftar' => now(),
-            ]);
-
+            'user_id'      => $userId,
+            'nama'         => $user->nama,
+            'gmail'        => $user->email,
+            "{$paket}_id"  => strtoupper($paket) . '-' . str_pad($userId, 5, '0', STR_PAD_LEFT),
+            'tgl_daftar'   => now(),
+        ]);
             // 2. Catat di mem_transaksi
             DB::table('mem_transaksi')->insert([
                 'user_id'           => $userId,
