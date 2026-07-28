@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mr. Hartono BarberShop</title>
     <link rel="stylesheet" href="{{ asset('style1.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
     <section>
@@ -18,8 +21,34 @@
             <li><a href="#gallery">GALLERY</a></li>
             <li><a href="#about">ABOUT</a></li>
             <li><a href="#contact">CONTACT</a></li>
-            <li><a href="/ecommerceHomePage">SHOP</a></li>
-            <li><a href="/pilih-member">MEMBER</a></li>
+            <li>
+                <a href="/ecommerceHomePage" class="nav-icon-link" aria-label="Shop">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="20" r="1"></circle>
+                        <circle cx="19" cy="20" r="1"></circle>
+                        <path d="M1 1h3l2.4 10.4a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L18 5H6"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="/pilih-member" class="nav-icon-link" aria-label="Member">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('logout') }}" class="nav-icon-link" aria-label="Logout">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Bagian ini membentuk garis kotak seperti pintu/ruangan -->
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <!-- Bagian ini membentuk tanda panah yang mengarah ke luar -->
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </a>
+            </li>
         </ul>
 
         <div class="btn">
@@ -43,8 +72,7 @@
             </div>
 
             <div class="location">
-                <p>LOCATION</p>
-                <span>Jl. Taman Harapan Baru Raya</span>
+                <p>LOCATION: Jl. Taman Harapan Baru Raya</p>
             </div>
         </div>
     </section>

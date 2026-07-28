@@ -249,6 +249,71 @@
 <script>
 
 let currentDate = new Date();
+let selectedDateValue = "";
+
+function formatDateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+function isSameDate(a, b) {
+    return a.getFullYear() === b.getFullYear()
+        && a.getMonth() === b.getMonth()
+        && a.getDate() === b.getDate();
+}
+
+function isSelectableDate(date) {
+    const today = new Date();
+    const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const targetDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    return targetDate >= startOfToday;
+}
+
+function isSelectableTime(dateValue, label) {
+    if (!dateValue) return false;
+
+    const today = new Date();
+    const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const selectedDate = new Date(dateValue + 'T00:00:00');
+
+    if (!isSameDate(selectedDate, startOfToday)) {
+        return true;
+    }
+
+    const [timeText, meridiem] = label.split(' ');
+    const [hourText, minuteText] = timeText.split(':');
+    let hour = parseInt(hourText, 10);
+    const minute = parseInt(minuteText, 10);
+
+    if (meridiem === 'PM' && hour < 12) {
+        hour += 12;
+    }
+
+    if (meridiem === 'AM' && hour === 12) {
+        hour = 0;
+    }
+
+    const slotTime = new Date();
+    slotTime.setHours(hour, minute, 0, 0);
+
+    return slotTime > today;
+}
+
+function renderTimeButtons() {
+    document.querySelectorAll('.time-list button').forEach(btn => {
+        const label = btn.innerText.trim();
+        const isDisabled = !isSelectableTime(selectedDateValue, label);
+
+        btn.disabled = isDisabled;
+        btn.classList.toggle('disabled', isDisabled);
+
+        if (btn.disabled && btn.classList.contains('active')) {
+            btn.classList.remove('active');
+        }
+    });
+}
 
 function renderCalendar(date) {
 
@@ -292,9 +357,18 @@ function renderCalendar(date) {
         const span =
         document.createElement("span");
 
+        const currentDateForDay = new Date(year, month, day);
+        const selectable = isSelectableDate(currentDateForDay);
+
         span.innerText = day;
+        span.classList.toggle('disabled', !selectable);
+
+        if (!selectable) {
+            span.setAttribute('aria-disabled', 'true');
+        }
 
         span.onclick = () => {
+            if (!selectable) return;
 
             document
             .querySelectorAll(".calendar-grid span")
@@ -302,21 +376,26 @@ function renderCalendar(date) {
 
             span.classList.add("active");
 
-            document
-            .getElementById("selectedDate")
-            .innerText =
-            day + " " + months[month] + " " + year;
-
             const fixMonth =
             String(month + 1).padStart(2, '0');
 
             const fixDay =
             String(day).padStart(2, '0');
 
+            selectedDateValue = year + "-" + fixMonth + "-" + fixDay;
+
+            document
+            .getElementById("selectedDate")
+            .innerText =
+            day + " " + months[month] + " " + year;
+
             document
             .getElementById("inputTanggal")
-            .value =
-            year + "-" + fixMonth + "-" + fixDay;
+            .value = selectedDateValue;
+
+            document.getElementById("selectedTime").innerText = "Select Time";
+            document.getElementById("inputJam").value = "";
+            renderTimeButtons();
         };
 
         grid.appendChild(span);
@@ -345,6 +424,15 @@ document.querySelectorAll(".time-list button")
 .forEach(btn => {
 
     btn.onclick = () => {
+
+        if (!selectedDateValue) {
+            alert("Pilih tanggal terlebih dahulu");
+            return;
+        }
+
+        if (btn.disabled) {
+            return;
+        }
 
         document
         .querySelectorAll(".time-list button")
@@ -383,9 +471,7 @@ document
 });
 
 renderCalendar(currentDate);
-
-document.getElementById("inputJam").value =
-"01:45 PM";
+renderTimeButtons();
 
 </script>
 

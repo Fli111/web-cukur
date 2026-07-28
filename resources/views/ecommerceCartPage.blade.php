@@ -115,7 +115,7 @@
 
                     <div style="display:flex; justify-content:space-between; align-items:center; margin: 30px 0 20px 0;">
                         <span style="font-weight:bold; color:#666;">Total Pembayaran:</span>
-                        <span class="harga-produk" style="font-size: 24px; color:#000;">IDR {{ number_format($total, 0, ',', '.') }}</span>
+                        <span class="harga-produk" style="font-size: 24px; color:#fff;">IDR {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
 
                     <button type="submit" class="btn-hitam">PROCESS CHECKOUT</button>

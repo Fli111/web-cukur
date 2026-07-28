@@ -60,8 +60,8 @@
     <div class="links-member">
         <a href="#">Forgot password?</a>
 
-        <a href="#"
-        onclick="window.parent.document.getElementById('popupFrame').src='{{ route('create') }}'"
+        <a href="javascript:void(0)"
+        onclick="window.parent.document.getElementById('popupFrame').src='{{ route('create') }}'; return false;"
         class="highlight">
             Create Account
         </a>

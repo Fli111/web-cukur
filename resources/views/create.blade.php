@@ -127,8 +127,8 @@
 
             ALREADY A MEMBER?
 
-            <a href="#"
-            onclick="window.parent.document.getElementById('popupFrame').src='{{ route('login') }}'">
+            <a href="javascript:void(0)"
+            onclick="window.parent.document.getElementById('popupFrame').src='{{ route('login') }}'; return false;">
                 SIGN IN
             </a>
         </p>
