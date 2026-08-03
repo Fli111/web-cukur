@@ -206,7 +206,7 @@
 
                     <a href="{{ route('book', ['service_id' => 2, 'service' => 'Ritual Hot Shave', 'price' => '55k']) }}" class="btn-gold-menu">
                         SERVICE ORDER
-                    </a>>
+                    </a>
                 </div>
             </div>
         </div>
